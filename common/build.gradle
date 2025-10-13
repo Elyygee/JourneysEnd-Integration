@@ -1,0 +1,94 @@
+architectury {
+    common rootProject.enabled_platforms.split(',')
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/academy-common.accesswidener")
+}
+
+// Keep all org.jetbrains.kotlin artifacts on the same version as FLK (2.2.20)
+configurations.configureEach {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion("2.2.20")
+            because("match Fabric Language Kotlin runtime")
+        }
+    }
+}
+
+dependencies {
+    modCompileOnly("net.fabricmc:fabric-loader:$rootProject.fabric_loader_version")
+    modCompileOnly("dev.architectury:architectury:$rootProject.architectury_api_version")
+    implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+
+    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1")
+    modCompileOnly(files("jars/molang-1.1.18.jar"))
+
+    modCompileOnly("curse.maven:cobbledollars-859232:6604561")
+    modCompileOnly(include("io.wispforest:owo-sentinel:0.12.15.4+1.21"))
+    modCompileOnly(annotationProcessor("io.wispforest:owo-lib:0.12.15.4+1.21"))
+
+    modCompileOnly("maven.modrinth:enhanced-celestials:6.0.2.4-fabric")
+    modCompileOnly("maven.modrinth:corgilib:1.21.1-5.0.0.7-Fabric")
+    modCompileOnly("maven.modrinth:data-anchor:2.0.0.12-fabric")
+
+    modCompileOnly("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
+
+    modCompileOnly("maven.modrinth:eternal-starlight:0.5.1+1.21.1+fabric")
+
+    modCompileOnly("maven.modrinth:itemzoomer:1.1.0-1.21.1")
+
+    modCompileOnly("maven.modrinth:journeymap:WvOAHk8e")
+
+    modCompileOnly("maven.modrinth:modernfix:5.24.3+mc1.21.1")
+
+    modCompileOnly("maven.modrinth:displayed:1.0.2-fabric-1.21.1")
+
+    modCompileOnly("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
+
+    modCompileOnly("maven.modrinth:rad-gyms:0.2-alpha.2")
+    modCompileOnly("maven.modrinth:rctapi:sZK1GcWC")
+    modCompileOnly("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
+
+    modCompileOnly("maven.modrinth:fading-clouds:1.1.0")
+
+    modCompileOnly("maven.modrinth:shutters:2.1.2")
+
+    modCompileOnly("com.squareup.okhttp3:okhttp:4.12.0")
+
+    modCompileOnly("dev.emi:trinkets:3.10.0")
+    modCompileOnly("maven.modrinth:cardinal-components-api:6.1.2")
+
+    modCompileOnly("maven.modrinth:fancymenu:3.7.0-1.21.1-fabric")
+    modCompileOnly("maven.modrinth:konkrete:1.9.9-1.21-fabric")
+    modCompileOnly("maven.modrinth:melody:1.0.10-1.21-fabric")
+
+    modCompileOnly("maven.modrinth:cobblemon-alpha-project:1.1")
+
+    modCompileOnly("dev.ftb.mods:ftb-quests:2101.1.14")
+    modCompileOnly("dev.ftb.mods:ftb-teams:2101.1.4")
+    modCompileOnly("dev.ftb.mods:ftb-library:2101.1.19")
+    modCompileOnly("dev.ftb.mods:ftb-essentials:2101.1.6")
+
+    modCompileOnly(files("jars/UltraBeasts-1.0.1.jar"))
+
+    modCompileOnly("maven.modrinth:extraquests:xyNKgwgq")
+
+    modCompileOnly("maven.modrinth:cobblemon-alpha-project:1.1")
+
+    modCompileOnly("maven.modrinth:bookshelf-lib:ckzM6Bhh")
+
+    modCompileOnly("maven.modrinth:cobblemon-mega-showdown:10.0.7-release-fabric")
+    modCompileOnly("curse.maven:cobblemon-integrations-913400:6726947")
+
+    modCompileOnly("maven.modrinth:gliding:1.0.1")
+
+    modCompileOnly("dev.emi:emi-xplat-intermediary:1.1.22+1.21.1:api")
+
+    modCompileOnly("maven.modrinth:lootables:0.1.4+1.21.1")
+
+    modCompileOnly("maven.modrinth:cobblemon-mass-outbreaks:1.0.0-1.21.1-fabric")
+
+    // Gson for configuration
+    implementation("com.google.code.gson:gson:2.10.1")
+}

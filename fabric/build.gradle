@@ -1,0 +1,155 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+    id 'org.jetbrains.kotlin.jvm' version '2.2.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.2.20'
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/academy-fabric.accesswidener")
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+repositories {
+    maven { url = uri("https://maven.fabricmc.net/") }
+}
+
+// Keep all org.jetbrains.kotlin artifacts on the same version as FLK (2.2.20)
+configurations.configureEach {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion("2.2.20")
+            because("match Fabric Language Kotlin runtime")
+        }
+    }
+}
+
+dependencies {
+    modImplementation("net.fabricmc:fabric-loader:$rootProject.fabric_loader_version")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version")
+    modImplementation("dev.architectury:architectury-fabric:$rootProject.architectury_api_version")
+    include(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
+    implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
+
+    modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.13.6+kotlin.2.2.20")
+
+    modImplementation("curse.maven:cobbledollars-859232:6604561")
+    //modImplementation("io.wispforest:owo-sentinel:0.12.15.4+1.21")
+    modImplementation("io.wispforest:owo-lib:0.12.15.4+1.21")
+
+    modImplementation("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
+    modImplementation(project(":common").files("jars/toml4j-0.7.2.jar"))
+
+    modImplementation("maven.modrinth:enhanced-celestials:6.0.2.4-fabric")
+    modImplementation("maven.modrinth:corgilib:1.21.1-5.0.0.7-Fabric")
+    modImplementation("maven.modrinth:data-anchor:2.0.0.12-fabric")
+
+    modImplementation("maven.modrinth:eternal-starlight:0.5.1+1.21.1+fabric")
+
+    modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
+
+    modImplementation("maven.modrinth:fading-clouds:1.1.0")
+
+    implementation(shadowBundle("com.squareup.okhttp3:okhttp:4.12.0"))
+
+    modImplementation("dev.emi:trinkets:3.10.0")
+    modImplementation("maven.modrinth:cardinal-components-api:6.1.2")
+
+    //modImplementation("maven.modrinth:fancymenu:3.7.0-1.21.1-fabric")
+    //modImplementation("maven.modrinth:konkrete:1.9.9-1.21-fabric")
+    //modImplementation("maven.modrinth:melody:1.0.10-1.21-fabric")
+
+    modImplementation("maven.modrinth:rad-gyms:0.2-alpha.2")
+    modImplementation("maven.modrinth:rctapi:sZK1GcWC")
+    modImplementation("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
+
+    modImplementation("dev.ftb.mods:ftb-quests-fabric:2101.1.14")
+    modImplementation("dev.ftb.mods:ftb-teams-fabric:2101.1.4")
+    modImplementation("dev.ftb.mods:ftb-library-fabric:2101.1.19")
+    modImplementation("dev.ftb.mods:ftb-essentials-fabric:2101.1.6")
+
+    modImplementation("maven.modrinth:cobblemon-alpha-project:1.1")
+    modImplementation("curse.maven:cobblemon-integrations-913400:6726947")
+
+    modImplementation("maven.modrinth:bookshelf-lib:ckzM6Bhh")
+
+    modImplementation("maven.modrinth:lootables:0.1.4+1.21.1")
+    modImplementation("maven.modrinth:fzzy-config:0.7.2+1.21")
+    modImplementation("net.peanuuutz.tomlkt:tomlkt:0.5.0")
+
+    modCompileOnly("dev.emi:emi-fabric:1.1.22+1.21.1:api")
+    modLocalRuntime("dev.emi:emi-fabric:1.1.22+1.21.1")
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+    exclude("kotlin/**")
+    dependencies {
+        exclude(dependency("org.jetbrains.kotlin:.*"))
+        exclude(dependency("org.jetbrains.kotlinx:.*"))
+    }
+}
+
+remapJar {
+    injectAccessWidener = true
+    input.set shadowJar.archiveFile
+    atAccessWideners.add "academy-common.accesswidener"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Abes-Hutt/StarAcademyMod")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = rootProject.maven_group
+            artifactId = rootProject.archives_name.toLowerCase()
+            version = "mc${rootProject.minecraft_version}-v${rootProject.mod_version}-${project.name}"
+            from components.java
+        }
+    }
+}
+
+tasks.register('printVersion') {
+    println "mc$rootProject.minecraft_version-v$rootProject.mod_version-fabric"
+}

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "generate:outfit-item-models": "tsx .\\runnables\\gen-outfit-item-models.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2"
+  }
+}

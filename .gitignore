@@ -1,0 +1,43 @@
+# Build outputs
+build/
+out/
+.gradle/
+output/
+bin/
+libs/
+classes/
+
+# IDE files
+.idea/
+.vscode/
+.settings/
+*.iml
+*.ipr
+*.iws
+*.launch
+.classpath
+.project
+.metadata
+
+# Runtime directories
+run/
+
+# Inventory Profiles Next source code
+Inventory-Profiles-all-in-one/
+
+# Mod dependencies
+Enhanced-Celestials/
+cobbledollars/
+neoforge/
+JourneysEnd/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

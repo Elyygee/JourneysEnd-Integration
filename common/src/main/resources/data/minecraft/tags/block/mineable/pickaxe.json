@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "journeysend:meteoric_chunk",
+    "journeysend:rare_meteoric_chunk",
+    "journeysend:fabulous_meteoric_chunk",
+    "journeysend:lunar_forecast_hologram"
+  ]
+}
+

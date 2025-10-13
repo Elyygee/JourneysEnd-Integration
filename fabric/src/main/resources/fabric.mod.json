@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "journeysend",
+  "version": "${version}",
+  "name": "Journey's End",
+  "description": "Integration mod for the Cobblemon Academy modpack.",
+  "authors": [
+    "KaptainWutax"
+  ],
+  "contact": {
+    "homepage": "https://cobblemon.academy/",
+    "sources": "https://github.com/Abes-Hutt/StarAcademyMod/",
+    "issues": "https://github.com/Abes-Hutt/StarAcademyMod/issues"
+  },
+  "license": "GPL-3.0-only",
+  "icon": "assets/journeysend/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "abeshutt.staracademy.fabric.StarAcademyFabricMod"
+    ],
+    "client": [
+      "abeshutt.staracademy.fabric.client.StarAcademyFabricModClient"
+    ],
+    "emi": [
+      "abeshutt.staracademy.AcademyEmiPlugin"
+    ]
+  },
+  "mixins": [
+    "academy-common.mixins.json",
+    "academy-fabric.mixins.json"
+  ],
+  "depends": {
+  },
+  "suggests": {
+  }
+}
