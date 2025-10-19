@@ -10,5 +10,5 @@ public record ModifierDisplayDTO(
     double resolution // formatting hint (optional)
 ) {
     public static final ModifierDisplayDTO UNKNOWN =
-        new ModifierDisplayDTO("unknown","text.academy.card.modifier.unknown",0x00AA00,"plain",0,0,0.001);
+        new ModifierDisplayDTO("unknown","text.journeysend.card.modifier.unknown",0x00AA00,"plain",0,0,0.001);
 }

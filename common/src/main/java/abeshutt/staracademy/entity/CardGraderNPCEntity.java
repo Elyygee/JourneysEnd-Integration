@@ -25,6 +25,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -138,15 +140,22 @@ public class CardGraderNPCEntity extends HumanEntity {
                 if(Platform.isModLoaded("cobbledollars")) {
                     BigInteger cost = BigInteger.valueOf(ModConfigs.NPC.getGradingCurrencyCost());
                     if(!PlayerExtensionKt.canBuy(player, cost)) {
-                        player.sendMessage(Text.empty().append(Text.translatable(INITIAL_BROKE.apply(random))
+                        player.sendMessage(Text.empty().append(Text.translatable("text.journeysend.grader.unlock_broke", cost.toString())
                                 .formatted(Formatting.GRAY)));
                     } else {
-                        BigInteger currentBalance = PlayerExtensionKt.getCobbleDollars(player);
-                        PlayerExtensionKt.setCobbleDollars(player, currentBalance.subtract(cost));
-                        data.add(player.getUuid(), stack.copy());
-                        player.setStackInHand(hand, ItemStack.EMPTY);
-                        player.sendMessage(Text.empty().append(Text.translatable(INITIAL_CARD.apply(random))
-                                .formatted(Formatting.GRAY)));
+                        // Show confirmation dialog instead of immediately taking money
+                        MutableText confirmationText = Text.empty()
+                                .append(Text.translatable("text.journeysend.grader.unlock_confirmation", cost.toString()).formatted(Formatting.GRAY))
+                                .append(" ")
+                                .append(Text.literal("[Yes]").formatted(Formatting.GREEN)
+                                        .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                                                "/journeysend grader confirm_unlock " + player.getUuid().toString()))))
+                                .append(" ")
+                                .append(Text.literal("[No]").formatted(Formatting.RED)
+                                        .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                                                "/journeysend grader cancel_unlock"))));
+                        
+                        player.sendMessage(confirmationText, false);
                     }
                 } else {
                     data.add(player.getUuid(), stack.copy());
@@ -169,37 +178,37 @@ public class CardGraderNPCEntity extends HumanEntity {
     }
 
     public static final Function<RandomSource, String> INITIAL_NO_CARD = create(
-            "text.academy.grader.initial_no_card_1",
-            "text.academy.grader.initial_no_card_2",
-            "text.academy.grader.initial_no_card_3",
-            "text.academy.grader.initial_no_card_4",
-            "text.academy.grader.initial_no_card_5",
-            "text.academy.grader.initial_no_card_6",
-            "text.academy.grader.initial_no_card_7"
+            "text.journeysend.grader.initial_no_card_1",
+            "text.journeysend.grader.initial_no_card_2",
+            "text.journeysend.grader.initial_no_card_3",
+            "text.journeysend.grader.initial_no_card_4",
+            "text.journeysend.grader.initial_no_card_5",
+            "text.journeysend.grader.initial_no_card_6",
+            "text.journeysend.grader.initial_no_card_7"
     );
 
     public static final Function<RandomSource, String> INITIAL_CARD = create(
-            "text.academy.grader.initial_card_1",
-            "text.academy.grader.initial_card_2",
-            "text.academy.grader.initial_card_3"
+            "text.journeysend.grader.initial_card_1",
+            "text.journeysend.grader.initial_card_2",
+            "text.journeysend.grader.initial_card_3"
     );
 
     public static final Function<RandomSource, String> INITIAL_BROKE = create(
-            "text.academy.grader.initial_broke_1",
-            "text.academy.grader.initial_broke_2",
-            "text.academy.grader.initial_broke_3"
+            "text.journeysend.grader.initial_broke_1",
+            "text.journeysend.grader.initial_broke_2",
+            "text.journeysend.grader.initial_broke_3"
     );
 
     public static final Function<RandomSource, String> REQUEST_IMPATIENT = create(
-            "text.academy.grader.request_impatient_1",
-            "text.academy.grader.request_impatient_2",
-            "text.academy.grader.request_impatient_3"
+            "text.journeysend.grader.request_impatient_1",
+            "text.journeysend.grader.request_impatient_2",
+            "text.journeysend.grader.request_impatient_3"
     );
 
     public static final Function<RandomSource, String> REQUEST_COMPLETE = create(
-            "text.academy.grader.request_complete_1",
-            "text.academy.grader.request_complete_2",
-            "text.academy.grader.request_complete_3"
+            "text.journeysend.grader.request_complete_1",
+            "text.journeysend.grader.request_complete_2",
+            "text.journeysend.grader.request_complete_3"
     );
 
     public static Function<RandomSource, String> create(String... lines) {

@@ -39,7 +39,7 @@ public class CardDisplayConfig extends FileConfig {
     protected void reset() {
         this.displays = new ArrayList<>();
         this.displays.add(new CardDisplayEntry(AttributePath.absolute("shiny_chance", "increased"),
-                "text.academy.card.display.shiny_chance_increased",
+                "text.journeysend.card.display.shiny_chance_increased",
                 0xFFDC2E,
                 new DecimalPercentageAttributeStyle(2, HALF_UP, false)));
     }

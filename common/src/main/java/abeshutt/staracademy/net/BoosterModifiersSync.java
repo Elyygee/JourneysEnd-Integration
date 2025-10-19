@@ -72,7 +72,7 @@ public class BoosterModifiersSync extends ModPacket<ClientPlayNetworkHandler> {
         var tmp = new HashMap<String, ModifierDisplayDTO>(n);
         for (int i=0;i<n;i++) {
             var id   = Adapters.UTF_8.readBits(buf).orElse("unknown");
-            var key  = Adapters.UTF_8.readBits(buf).orElse("text.academy.card.modifier.unknown");
+            var key  = Adapters.UTF_8.readBits(buf).orElse("text.journeysend.card.modifier.unknown");
             int col  = Adapters.INT.readBits(buf).orElse(0x00AA00);
             var sty  = Adapters.UTF_8.readBits(buf).orElse("plain");
             double mn = Adapters.DOUBLE.readBits(buf).orElse(0d);

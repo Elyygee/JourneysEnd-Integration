@@ -14,6 +14,7 @@ public class ModCommands {
         register(ReloadCommand::new, dispatcher, access, environment);
         register(StarterCommand::new, dispatcher, access, environment);
         register(SafariCommand::new, dispatcher, access, environment);
+        register(GraderCommand::new, dispatcher, access, environment);
         register(PartnerCommand::new, dispatcher, access, environment);
         register(WardrobeCommand::new, dispatcher, access, environment);
         register(StatsCommand::new, dispatcher, access, environment);

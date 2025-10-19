@@ -66,19 +66,19 @@ public class CardData implements ISerializable<NbtCompound, JsonObject> {
 
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         tooltip.add(Text.empty()
-                .append(Text.translatable("text.academy.card.rarity"))
+                .append(Text.translatable("text.journeysend.card.rarity"))
                 .append(Text.literal(": "))
-                .append(Text.translatable("text.academy.card.rarity." + this.rarity.asString()).setStyle(Style.EMPTY.withColor(this.rarity.getColor()))));
+                .append(Text.translatable("text.journeysend.card.rarity." + this.rarity.asString()).setStyle(Style.EMPTY.withColor(this.rarity.getColor()))));
 
         if(this.grade == 0) {
             tooltip.add(Text.empty()
-                    .append(Text.translatable("text.academy.card.grade").formatted(Formatting.GRAY))
+                    .append(Text.translatable("text.journeysend.card.grade").formatted(Formatting.GRAY))
                     .append(Text.literal(": ???").formatted(Formatting.GRAY)));
         } else {
             tooltip.add(Text.empty()
-                    .append(Text.translatable("text.academy.card.grade"))
+                    .append(Text.translatable("text.journeysend.card.grade"))
                     .append(Text.literal(": "))
-                    .append(Text.translatable("text.academy.card.grade." + this.grade)));
+                    .append(Text.translatable("text.journeysend.card.grade." + this.grade)));
         }
 
         //tooltip.add(Text.empty());

@@ -2,16 +2,19 @@ package abeshutt.staracademy.command;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.block.SafariPortalBlock;
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.SafariTicketItem;
 import abeshutt.staracademy.world.data.SafariData;
-// Cobbledollars integration completed - using PlayerExtensionKt for balance operations
+import fr.harmex.cobbledollars.common.utils.extensions.PlayerExtensionKt;
+import java.math.BigInteger;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.TimeArgumentType;
+import net.minecraft.command.argument.UuidArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,36 +30,42 @@ public class SafariCommand extends Command {
 
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
-        // /journeysend safari ...
+        // /journeysend safari ... (combined OP and player commands)
         dispatcher.register(
             literal(StarAcademyMod.ID)
                 .then(literal("safari")
-                    .requires(source -> source.hasPermissionLevel(4))
-                    .then(literal("pause").executes(this::onPause))
-                    .then(literal("unpause").executes(this::onUnpause))
-                    .then(literal("restart").executes(this::onRestart))
-                    .then(literal("add_time")
+                    .then(literal("pause").requires(source -> source.hasPermissionLevel(4)).executes(this::onPause))
+                    .then(literal("unpause").requires(source -> source.hasPermissionLevel(4)).executes(this::onUnpause))
+                    .then(literal("restart").requires(source -> source.hasPermissionLevel(4)).executes(this::onRestart))
+                    .then(literal("add_time").requires(source -> source.hasPermissionLevel(4))
                         .then(argument("players", EntityArgumentType.players())
                             .then(argument("time", TimeArgumentType.time(Integer.MIN_VALUE))
-                                .executes(this::onAddTime)))))
+                                .executes(this::onAddTime))))
+                    .then(literal("confirm_unlock")
+                        .then(argument("playerUuid", UuidArgumentType.uuid())
+                            .executes(this::onConfirmUnlock)))
+                    .then(literal("cancel_unlock").executes(this::onCancelUnlock)))
         );
 
         // Build /je subtree separately to avoid paren hell
         var je = literal("je");
 
-        // /je safari ...
+        // /je safari ... (accessible to everyone, subcommands have individual permissions)
         je.then(
             literal("safari")
-                .requires(source -> source.hasPermissionLevel(4))
-                .then(literal("pause").executes(this::onPause))
-                .then(literal("unpause").executes(this::onUnpause))
-                .then(literal("restart").executes(this::onRestart))
-                .then(literal("debug")
+                .then(literal("pause").requires(source -> source.hasPermissionLevel(4)).executes(this::onPause))
+                .then(literal("unpause").requires(source -> source.hasPermissionLevel(4)).executes(this::onUnpause))
+                .then(literal("restart").requires(source -> source.hasPermissionLevel(4)).executes(this::onRestart))
+                .then(literal("debug").requires(source -> source.hasPermissionLevel(4))
                     .then(literal("portal").executes(this::debugPortal)))
-                .then(literal("add_time")
+                .then(literal("add_time").requires(source -> source.hasPermissionLevel(4))
                     .then(argument("players", EntityArgumentType.players())
                         .then(argument("time", TimeArgumentType.time(Integer.MIN_VALUE))
                             .executes(this::onAddTime))))
+                .then(literal("confirm_unlock")
+                    .then(argument("playerUuid", UuidArgumentType.uuid())
+                        .executes(this::onConfirmUnlock)))
+                .then(literal("cancel_unlock").executes(this::onCancelUnlock))
         );
 
         // /je lunar ...
@@ -232,6 +241,49 @@ public class SafariCommand extends Command {
                 .formatted(Formatting.AQUA), false);
 
         return 1;
+    }
+
+    private int onConfirmUnlock(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        java.util.UUID playerUuid = UuidArgumentType.getUuid(context, "playerUuid");
+        ServerCommandSource source = context.getSource();
+        
+        // Find the player by UUID
+        ServerPlayerEntity player = source.getServer().getPlayerManager().getPlayer(playerUuid);
+        if (player == null) {
+            source.sendError(Text.literal("Player not found"));
+            return 0;
+        }
+        
+        SafariData data = ModWorldData.SAFARI.getGlobal(player.getWorld());
+        SafariData.Entry entry = data.getOrCreate(player.getUuid());
+
+        // Check if player is OP and bypass unlock requirement
+        boolean isOp = player.getServer() != null && player.getServer().getPlayerManager().isOperator(player.getGameProfile());
+        
+        if(!entry.isUnlocked() && !isOp) {
+            BigInteger cost = BigInteger.valueOf(ModConfigs.NPC.getSafariCurrencyCost());
+            if(PlayerExtensionKt.canBuy(player, cost)) {
+                BigInteger currentBalance = PlayerExtensionKt.getCobbleDollars(player);
+                PlayerExtensionKt.setCobbleDollars(player, currentBalance.subtract(cost));
+                player.sendMessage(Text.empty().append(Text.translatable("text.journeysend.safari.unlock_complete")
+                        .formatted(Formatting.GRAY)));
+                entry.setUnlocked(true);
+                entry.setPrompted(true);
+                data.markDirty();
+            } else {
+                player.sendMessage(Text.empty()
+                        .append(Text.translatable("text.journeysend.safari.unlock_broke", cost.toString()).formatted(Formatting.GRAY)));
+            }
+        }
+
+        return 0;
+    }
+
+    private int onCancelUnlock(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
+        player.sendMessage(Text.empty()
+                .append(Text.translatable("text.journeysend.safari.unlock_cancelled").formatted(Formatting.GRAY)));
+        return 0;
     }
 
 }

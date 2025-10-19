@@ -75,7 +75,7 @@ public class AcceptanceLetterItem extends Item {
 
         if(!world.isClient()) {
             if(!user.getUuid().equals(stack.getOrDefault(ACCEPTANCE_LETTER_OWNER.get(), null))) {
-                user.sendMessage(Text.translatable("text.academy.acceptance_letter.incorrect_recipient").formatted(Formatting.RED), true);
+                user.sendMessage(Text.translatable("text.journeysend.acceptance_letter.incorrect_recipient").formatted(Formatting.RED), true);
                 return TypedActionResult.fail(stack);
             } else {
                 stack.set(ACCEPTANCE_LETTER_OPEN.get(), true);

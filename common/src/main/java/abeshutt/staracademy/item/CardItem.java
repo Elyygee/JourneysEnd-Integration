@@ -49,9 +49,9 @@ public class CardItem extends Item implements ISpecialItemModel, Equipment {
         if(colors == null) return super.getName(stack);
 
         MutableText text = Text.empty();
-        text.append(Text.translatable("text.academy.card.name.prefix"));
+        text.append(Text.translatable("text.journeysend.card.name.prefix"));
         text.append(Text.translatable(entry.getName()));
-        text.append(Text.translatable("text.academy.card.name.suffix"));
+        text.append(Text.translatable("text.journeysend.card.name.suffix"));
 
         ColorBlender blender = new ColorBlender(2.0F);
 

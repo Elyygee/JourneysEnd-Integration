@@ -12,6 +12,8 @@ import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -67,21 +69,27 @@ public class SafariNPCEntity extends HumanEntity {
                 if(!PlayerExtensionKt.canBuy(player, cost)) {
                     if(!entry.isPrompted()) {
                         player.sendMessage(Text.empty()
-                                .append(Text.translatable("text.academy.safari.initial_locked").formatted(Formatting.GRAY)));
+                                .append(Text.translatable("text.journeysend.safari.initial_locked", cost.toString()).formatted(Formatting.GRAY)));
                         entry.setPrompted(true);
                         data.markDirty();
                     } else {
                         player.sendMessage(Text.empty()
-                                .append(Text.translatable("text.academy.safari.unlock_broke").formatted(Formatting.GRAY)));
+                                .append(Text.translatable("text.journeysend.safari.unlock_broke", cost.toString()).formatted(Formatting.GRAY)));
                     }
                 } else {
-                    BigInteger currentBalance = PlayerExtensionKt.getCobbleDollars(player);
-                    PlayerExtensionKt.setCobbleDollars(player, currentBalance.subtract(cost));
-                    player.sendMessage(Text.empty().append(Text.translatable("text.academy.safari.unlock_complete")
-                            .formatted(Formatting.GRAY)));
-                    entry.setUnlocked(true);
-                    entry.setPrompted(true);
-                    data.markDirty();
+                    // Show confirmation dialog instead of immediately taking money
+                    MutableText confirmationText = Text.empty()
+                            .append(Text.translatable("text.journeysend.safari.unlock_confirmation", cost.toString()).formatted(Formatting.GRAY))
+                            .append(" ")
+                            .append(Text.literal("[Yes]").formatted(Formatting.GREEN)
+                                    .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                                            "/journeysend safari confirm_unlock " + player.getUuid().toString()))))
+                            .append(" ")
+                            .append(Text.literal("[No]").formatted(Formatting.RED)
+                                    .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                                            "/journeysend safari cancel_unlock"))));
+                    
+                    player.sendMessage(confirmationText, false);
                 }
 
                 return ActionResult.SUCCESS;
@@ -89,10 +97,10 @@ public class SafariNPCEntity extends HumanEntity {
 
             if(data.isPaused()) {
                 player.sendMessage(Text.empty()
-                        .append(Text.translatable("text.academy.safari.initial_closed").formatted(Formatting.GRAY)));
+                        .append(Text.translatable("text.journeysend.safari.initial_closed").formatted(Formatting.GRAY)));
             } else {
                 player.sendMessage(Text.empty()
-                        .append(Text.translatable("text.academy.safari.initial_open").formatted(Formatting.GRAY)));
+                        .append(Text.translatable("text.journeysend.safari.initial_open").formatted(Formatting.GRAY)));
             }
         }
 

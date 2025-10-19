@@ -124,43 +124,43 @@ public class CardModifier implements ISerializable<NbtCompound, JsonObject> {
     private String inferDisplayName(String source) {
         // Try to infer a readable name from the source ID based on the config paths
         if (source.contains("block_interaction_range")) {
-            return "text.academy.card.modifier.block_reach";
+            return "text.journeysend.card.modifier.block_reach";
         } else if (source.contains("movement_speed")) {
-            return "text.academy.card.modifier.movement_speed";
+            return "text.journeysend.card.modifier.movement_speed";
         } else if (source.contains("oxygen_bonus")) {
-            return "text.academy.card.modifier.oxygen_bonus";
+            return "text.journeysend.card.modifier.oxygen_bonus";
         } else if (source.contains("armor")) {
-            return "text.academy.card.modifier.armor";
+            return "text.journeysend.card.modifier.armor";
         } else if (source.contains("jump_strength")) {
-            return "text.academy.card.modifier.jump_strength";
+            return "text.journeysend.card.modifier.jump_strength";
         } else if (source.contains("block_break_speed")) {
-            return "text.academy.card.modifier.block_break_speed";
+            return "text.journeysend.card.modifier.block_break_speed";
         } else if (source.contains("shiny_chance")) {
-            return "text.academy.card.modifier.shiny_chance";
+            return "text.journeysend.card.modifier.shiny_chance";
         } else if (source.contains("poison")) {
-            return "text.academy.card.modifier.poison_influence";
+            return "text.journeysend.card.modifier.poison_influence";
         } else if (source.contains("fire")) {
-            return "text.academy.card.modifier.fire_influence";
+            return "text.journeysend.card.modifier.fire_influence";
         } else if (source.contains("water")) {
-            return "text.academy.card.modifier.water_influence";
+            return "text.journeysend.card.modifier.water_influence";
         } else if (source.contains("electric")) {
-            return "text.academy.card.modifier.electric_influence";
+            return "text.journeysend.card.modifier.electric_influence";
         } else if (source.contains("grass")) {
-            return "text.academy.card.modifier.grass_influence";
+            return "text.journeysend.card.modifier.grass_influence";
         } else if (source.contains("damage")) {
-            return "text.academy.card.modifier.damage";
+            return "text.journeysend.card.modifier.damage";
         } else if (source.contains("speed")) {
-            return "text.academy.card.modifier.speed";
+            return "text.journeysend.card.modifier.speed";
         } else if (source.contains("health")) {
-            return "text.academy.card.modifier.health";
+            return "text.journeysend.card.modifier.health";
         } else if (source.contains("attack")) {
-            return "text.academy.card.modifier.attack";
+            return "text.journeysend.card.modifier.attack";
         } else if (source.contains("defense")) {
-            return "text.academy.card.modifier.defense";
+            return "text.journeysend.card.modifier.defense";
         } else if (source.contains("spawn")) {
-            return "text.academy.card.modifier.spawn_influence";
+            return "text.journeysend.card.modifier.spawn_influence";
         } else {
-            return "text.academy.card.modifier.unknown";
+            return "text.journeysend.card.modifier.unknown";
         }
     }
 
