@@ -41,3 +41,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Codex files
+codex/
+local_codex_client.py
+README_codex_downloader.md
+README_local_server.md
+en_us.json
