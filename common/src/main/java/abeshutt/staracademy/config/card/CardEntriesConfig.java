@@ -36,24 +36,19 @@ public class CardEntriesConfig extends ServerOnlyFileConfig {
         if (this.values == null) {
             this.reset(); // Initialize with defaults if null
         }
-        System.out.println("[DEBUG] CardEntriesConfig.flatten: Processing id: " + id);
         if(id.startsWith("@")) {
             String poolName = id.substring(1);
-            System.out.println("[DEBUG] CardEntriesConfig.flatten: Looking for pool: " + poolName);
             Map<String, Rational> group = this.pools.get(poolName);
 
             if(group == null) {
-                System.out.println("[DEBUG] CardEntriesConfig.flatten: Pool '" + poolName + "' not found. Available pools: " + this.pools.keySet());
                 return Option.absent();
             }
 
-            System.out.println("[DEBUG] CardEntriesConfig.flatten: Found pool '" + poolName + "' with " + group.size() + " entries: " + group.keySet());
             WeightedList<String> weighted = WeightedList.of(group);
             return weighted.getRandom(random).mapFlat(s -> this.flatten(s, random));
         }
 
         boolean hasValue = this.values.containsKey(id);
-        System.out.println("[DEBUG] CardEntriesConfig.flatten: Direct lookup for '" + id + "': " + (hasValue ? "FOUND" : "NOT FOUND"));
         return hasValue ? Option.present(id) : Option.absent();
     }
 

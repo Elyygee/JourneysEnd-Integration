@@ -1,0 +1,240 @@
+{
+  "name": "item.academy.outfit.pikachu_hat",
+  "icon": "academy:outfit/pikachu_hat#inventory",
+  "classic": {
+    "texture": {
+      "id": "academy:textures/entity/outfit/pikachu_hat.png",
+      "width": 64,
+      "height": 64
+    },
+    "mesh": {
+      "/head": {
+        "cuboids": [
+          {
+            "offset": [
+              -4.0,
+              -8.0,
+              -4.0
+            ],
+            "size": [
+              8.0,
+              8.0,
+              8.0
+            ],
+            "dilation": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "texture": {
+              "uv": [
+                22.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "offset": [
+              0.0,
+              -20.0,
+              5.0
+            ],
+            "size": [
+              0.0,
+              20.0,
+              11.0
+            ],
+            "texture": {
+              "uv": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ],
+        "/cube_r1": {
+          "cuboids": [
+            {
+              "offset": [
+                0.5,
+                -4.0,
+                -1.5
+              ],
+              "size": [
+                3.0,
+                8.0,
+                3.0
+              ],
+              "texture": {
+                "uv": [
+                  22.0,
+                  27.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.3927
+          ],
+          "pivot": [
+            2.75,
+            -12.0,
+            -0.5
+          ]
+        },
+        "/cube_r2": {
+          "cuboids": [
+            {
+              "offset": [
+                -3.5,
+                -4.0,
+                -1.5
+              ],
+              "size": [
+                3.0,
+                8.0,
+                3.0
+              ],
+              "texture": {
+                "uv": [
+                  22.0,
+                  16.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            -0.3927
+          ],
+          "pivot": [
+            -2.75,
+            -12.0,
+            -0.5
+          ]
+        }
+      }
+    }
+  },
+  "slim": {
+    "texture": {
+      "id": "academy:textures/entity/outfit/pikachu_hat.png",
+      "width": 64,
+      "height": 64
+    },
+    "mesh": {
+      "/head": {
+        "cuboids": [
+          {
+            "offset": [
+              -4.0,
+              -8.0,
+              -4.0
+            ],
+            "size": [
+              8.0,
+              8.0,
+              8.0
+            ],
+            "dilation": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "texture": {
+              "uv": [
+                22.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "offset": [
+              0.0,
+              -20.0,
+              5.0
+            ],
+            "size": [
+              0.0,
+              20.0,
+              11.0
+            ],
+            "texture": {
+              "uv": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ],
+        "/cube_r1": {
+          "cuboids": [
+            {
+              "offset": [
+                0.5,
+                -4.0,
+                -1.5
+              ],
+              "size": [
+                3.0,
+                8.0,
+                3.0
+              ],
+              "texture": {
+                "uv": [
+                  22.0,
+                  27.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.3927
+          ],
+          "pivot": [
+            2.75,
+            -12.0,
+            -0.5
+          ]
+        },
+        "/cube_r2": {
+          "cuboids": [
+            {
+              "offset": [
+                -3.5,
+                -4.0,
+                -1.5
+              ],
+              "size": [
+                3.0,
+                8.0,
+                3.0
+              ],
+              "texture": {
+                "uv": [
+                  22.0,
+                  16.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            -0.3927
+          ],
+          "pivot": [
+            -2.75,
+            -12.0,
+            -0.5
+          ]
+        }
+      }
+    }
+  }
+}

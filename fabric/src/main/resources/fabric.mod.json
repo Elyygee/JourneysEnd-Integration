@@ -3,7 +3,7 @@
   "id": "journeysend",
   "version": "${version}",
   "name": "Journey's End",
-  "description": "Integration mod for the Cobblemon Academy modpack.",
+  "description": "Integration mod for the Journey's End modpack.",
   "authors": [
     "KaptainWutax"
   ],

@@ -59,7 +59,7 @@ public class WardrobeData extends WorldData {
                     other.sendMessage(Text.empty()
                         .append(player.getName())
                         .append(Text.literal(" unlocked a new outfit: ").formatted(Formatting.GRAY))
-                        .append(Text.translatable("item.academy.outfit." + id))
+                        .append(Text.translatable("item.journeysend.outfit." + id))
                         .append(Text.literal(".").formatted(Formatting.GRAY)));
                 }
             }

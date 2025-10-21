@@ -42,15 +42,12 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
 
     public static Optional<BoosterPackEntry> get(ItemStack stack, boolean client) {
         String boosterId = stack.getOrDefault(ModDataComponents.BOOSTER_PACK.get(), null);
-        System.out.println("[DEBUG] BoosterPackItem.get: Booster ID from stack: " + boosterId);
         
         if(boosterId == null) {
-            System.out.println("[DEBUG] BoosterPackItem.get: No booster ID found in stack");
             return Optional.empty();
         }
         
         Optional<BoosterPackEntry> entry = ModConfigs.CARD_BOOSTERS.get(boosterId);
-        System.out.println("[DEBUG] BoosterPackItem.get: Found booster entry: " + (entry.isPresent() ? "YES" : "NO"));
         return entry;
     }
 
@@ -59,7 +56,7 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
     }
 
     public static ItemStack create(String id) {
-        ItemStack stack = new ItemStack(ModItems.BOOSTER_PACK.get());
+        ItemStack stack = new ItemStack(ModItems.BASE_BOOSTER_PACK.get());
         stack.set(ModDataComponents.BOOSTER_PACK.get(), id);
         return stack;
     }
@@ -84,30 +81,19 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
         ItemStack stack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
 
-        System.out.println("[DEBUG] BoosterPackItem.use: world.isClient() = " + world.isClient());
-        System.out.println("[DEBUG] BoosterPackItem.use: stack.contains(CONTAINER) = " + stack.contains(DataComponentTypes.CONTAINER));
-
         if(!world.isClient() && !stack.contains(DataComponentTypes.CONTAINER)) {
-            System.out.println("[DEBUG] BoosterPackItem.use: Generating cards on server side");
             BoosterPackItem.get(stack, false).ifPresent(entry -> {
-                System.out.println("[DEBUG] BoosterPackItem.use: Found booster pack entry: " + entry);
                 List<ItemStack> items = new ArrayList<>();
 
                 List<CardData> cardDataList = entry.generate(JavaRandom.ofNanoTime());
-                System.out.println("[DEBUG] BoosterPackItem.use: Generated " + cardDataList.size() + " card data entries");
 
                 for(CardData data : cardDataList) {
                     ItemStack cardItem = CardItem.of(data);
-                    System.out.println("[DEBUG] BoosterPackItem.use: Created card item: " + cardItem);
                     items.add(cardItem);
                 }
 
-                System.out.println("[DEBUG] BoosterPackItem.use: Total items to add to container: " + items.size());
                 stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(new ArrayList<>(items)));
             });
-            if (!BoosterPackItem.get(stack, false).isPresent()) {
-                System.out.println("[DEBUG] BoosterPackItem.use: No booster pack entry found for stack");
-            }
         }
 
         if(world.isClient()) {

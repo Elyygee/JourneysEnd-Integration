@@ -45,7 +45,7 @@ public class AcceptanceLetterScreen extends Screen {
 
         if(!this.enrolled) {
             this.addDrawableChild(new EnrolButton(centerX - 60 / 2, centerY - 15 / 2 + 75,
-                    60, 15, Text.translatable("item.academy.acceptance_letter.enroll"), () -> {
+                    60, 15, Text.translatable("item.journeysend.acceptance_letter.enroll"), () -> {
                 NetworkManager.sendToServer(new ConfirmAcceptanceLetterC2SPacket());
                 this.close();
             }));
@@ -66,7 +66,7 @@ public class AcceptanceLetterScreen extends Screen {
         context.getMatrices().pop();
 
         MutableText text = Text.empty();
-        text.append(Text.translatable("item.academy.acceptance_letter.content"));
+        text.append(Text.translatable("item.journeysend.acceptance_letter.content"));
         List<OrderedText> parts = this.textRenderer.wrapLines(text, 145);
 
         context.getMatrices().push();

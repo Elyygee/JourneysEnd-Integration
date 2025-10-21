@@ -17,8 +17,8 @@ public class ModPokeBalls {
                 }
 
                 return 1F;
-            }), new ArrayList<>(), 0.8F, StarAcademyMod.id("great_safari_ball"),
-            StarAcademyMod.id("item/great_safari_ball_model"), 1.25F, false);
+            }),             new ArrayList<>(), 0.8F, StarAcademyMod.id("great_safari_ball"),
+            StarAcademyMod.id("item/great_safari_ball"), 1.25F, false);
     public static final PokeBall GOLDEN_SAFARI_BALL = new PokeBall(StarAcademyMod.id("golden_safari_ball"),
             new WorldStateModifier((thrower, entity) -> {
                 if (!entity.isBattling()) {
@@ -29,5 +29,5 @@ public class ModPokeBalls {
             }),
             List.of((thrower, pokemon) -> pokemon.setShiny(true)),
             0.8F, StarAcademyMod.id("golden_safari_ball"),
-            StarAcademyMod.id("item/golden_safari_ball_model"), 1.25F, false);
+            StarAcademyMod.id("item/golden_safari_ball"), 1.25F, false);
 }

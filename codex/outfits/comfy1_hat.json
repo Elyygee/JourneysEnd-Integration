@@ -1,0 +1,90 @@
+{
+  "name": "item.academy.outfit.comfy1_hat",
+  "icon": "academy:outfit/comfy1_hat#inventory",
+  "classic": {
+    "texture": {
+      "id": "academy:textures/entity/outfit/comfy1_top.png",
+      "width": 64,
+      "height": 64
+    },
+    "mesh": {
+      "/head": {
+        "/cube_r1": {
+          "cuboids": [
+            {
+              "offset": [
+                -5.0,
+                -2.5,
+                -5.0
+              ],
+              "size": [
+                10.0,
+                3.0,
+                10.0
+              ],
+              "texture": {
+                "uv": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            -0.211,
+            0.056,
+            0.2559
+          ],
+          "pivot": [
+            0.0,
+            -8.25,
+            0.0
+          ]
+        }
+      }
+    }
+  },
+  "slim": {
+    "texture": {
+      "id": "academy:textures/entity/outfit/comfy1_top.png",
+      "width": 64,
+      "height": 64
+    },
+    "mesh": {
+      "/head": {
+        "/cube_r1": {
+          "cuboids": [
+            {
+              "offset": [
+                -5.0,
+                -2.5,
+                -5.0
+              ],
+              "size": [
+                10.0,
+                3.0,
+                10.0
+              ],
+              "texture": {
+                "uv": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            -0.211,
+            0.056,
+            0.2559
+          ],
+          "pivot": [
+            0.0,
+            -8.25,
+            0.0
+          ]
+        }
+      }
+    }
+  }
+}

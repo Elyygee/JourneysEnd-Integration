@@ -1,0 +1,126 @@
+{
+  "name": "item.academy.outfit.comfy2_hat",
+  "icon": "academy:outfit/comfy2_hat#inventory",
+  "classic": {
+    "texture": {
+      "id": "academy:textures/entity/outfit/comfy2_top.png",
+      "width": 64,
+      "height": 64
+    },
+    "mesh": {
+      "/head": {
+        "/cube_r1": {
+          "cuboids": [
+            {
+              "offset": [
+                -1.0,
+                -3.0,
+                -1.0
+              ],
+              "size": [
+                2.0,
+                1.0,
+                2.0
+              ],
+              "texture": {
+                "uv": [
+                  40.0,
+                  10.0
+                ]
+              }
+            },
+            {
+              "offset": [
+                -5.0,
+                -2.0,
+                -5.0
+              ],
+              "size": [
+                10.0,
+                4.0,
+                10.0
+              ],
+              "texture": {
+                "uv": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            -0.1231,
+            -0.0447,
+            -0.3463
+          ],
+          "pivot": [
+            -0.5,
+            -8.2243,
+            0.3916
+          ]
+        }
+      }
+    }
+  },
+  "slim": {
+    "texture": {
+      "id": "academy:textures/entity/outfit/comfy2_top.png",
+      "width": 64,
+      "height": 64
+    },
+    "mesh": {
+      "/head": {
+        "/cube_r1": {
+          "cuboids": [
+            {
+              "offset": [
+                -1.0,
+                -3.0,
+                -1.0
+              ],
+              "size": [
+                2.0,
+                1.0,
+                2.0
+              ],
+              "texture": {
+                "uv": [
+                  40.0,
+                  10.0
+                ]
+              }
+            },
+            {
+              "offset": [
+                -5.0,
+                -2.0,
+                -5.0
+              ],
+              "size": [
+                10.0,
+                4.0,
+                10.0
+              ],
+              "texture": {
+                "uv": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ],
+          "rotation": [
+            -0.1231,
+            -0.0447,
+            -0.3463
+          ],
+          "pivot": [
+            -0.5,
+            -8.2243,
+            0.3916
+          ]
+        }
+      }
+    }
+  }
+}

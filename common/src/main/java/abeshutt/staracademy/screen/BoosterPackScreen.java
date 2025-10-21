@@ -35,20 +35,16 @@ public class BoosterPackScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if(player == null) {
-            System.out.println("[DEBUG] BoosterPackScreen: Player is null");
             return;
         }
         ItemStack stack = player.getStackInHand(player.getActiveHand());
-        System.out.println("[DEBUG] BoosterPackScreen: ItemStack = " + stack);
         ContainerComponent container = stack.getOrDefault(DataComponentTypes.CONTAINER, null);
         if(container == null) {
-            System.out.println("[DEBUG] BoosterPackScreen: Container component is null");
             return;
         }
 
         List<ItemStack> items = new ArrayList<>();
         container.iterateNonEmpty().forEach(items::add);
-        System.out.println("[DEBUG] BoosterPackScreen: Found " + items.size() + " items in container");
 
         float width = 56.0F;
         float spanX = width * items.size();

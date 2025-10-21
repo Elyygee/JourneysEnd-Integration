@@ -1,35 +1,26 @@
 package abeshutt.staracademy.init;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.item.*;
 import com.cobblemon.mod.common.CobblemonItems;
-import com.cobblemon.mod.common.api.pokeball.catching.CaptureEffect;
-import com.cobblemon.mod.common.api.pokeball.catching.modifiers.MultiplierModifier;
-import com.cobblemon.mod.common.api.pokeball.catching.modifiers.WorldStateModifier;
 import com.cobblemon.mod.common.item.PokeBallItem;
-import com.cobblemon.mod.common.pokeball.PokeBall;
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.type.FoodComponent;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
 public class ModItems extends ModRegistries {
 
-    public static RegistrySupplier<Item> HUNT;
+    public static RegistrySupplier<Item> DEX_REWARDS;
     public static RegistrySupplier<OutfitItem> OUTFIT;
-    public static RegistrySupplier<SafariTicketItem> SAFARI_TICKET;
-    public static RegistrySupplier<SlingshotItem> SLINGSHOT;
+    public static RegistrySupplier<SafariTicketBaseItem> SAFARI_TICKET_BASE;
+    public static RegistrySupplier<SafariTicketGreatItem> SAFARI_TICKET_GREAT;
+    public static RegistrySupplier<SafariTicketGoldenItem> SAFARI_TICKET_GOLDEN;
     public static RegistrySupplier<Item> HA_FOSSIL;
     public static RegistrySupplier<Item> MAX_IV_FOSSIL;
     public static RegistrySupplier<Item> SHINY_FOSSIL;
@@ -37,7 +28,6 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> STRONG_SHINY_INCENSE;
     public static RegistrySupplier<Item> UBER_SHINY_INCENSE;
     public static RegistrySupplier<Item> CARD;
-    public static RegistrySupplier<Item> BOOSTER_PACK;
     public static RegistrySupplier<Item> BASE_BOOSTER_PACK;
     public static RegistrySupplier<Item> CARD_ALBUM;
     public static RegistrySupplier<Item> LEGENDARY_PLACEHOLDER;
@@ -47,10 +37,11 @@ public class ModItems extends ModRegistries {
     public static Supplier<Set<PokeBallItem>> SAFARI_BALLS = () -> Set.of(CobblemonItems.SAFARI_BALL, GREAT_SAFARI_BALL.get(), GOLDEN_SAFARI_BALL.get());
 
     public static void register() {
-        HUNT = register("hunt", () -> new Item(new Item.Settings().maxCount(1).fireproof()));
+        DEX_REWARDS = register("rewards", () -> new DexRewardsItem(new Item.Settings().maxCount(1).fireproof()));
         OUTFIT = register("outfit", OutfitItem::new);
-        SAFARI_TICKET = register("safari_ticket", SafariTicketItem::new);
-        SLINGSHOT = register("slingshot", SlingshotItem::new);
+        SAFARI_TICKET_BASE = register("safari_ticket_base", SafariTicketBaseItem::new);
+        SAFARI_TICKET_GREAT = register("safari_ticket_great", SafariTicketGreatItem::new);
+        SAFARI_TICKET_GOLDEN = register("safari_ticket_golden", SafariTicketGoldenItem::new);
         HA_FOSSIL = register("ha_fossil", () -> new Item(new Item.Settings().maxCount(1)));
         MAX_IV_FOSSIL = register("max_iv_fossil", () -> new Item(new Item.Settings().maxCount(1)));
         SHINY_FOSSIL = register("shiny_fossil", () -> new Item(new Item.Settings().maxCount(1)));
@@ -58,7 +49,6 @@ public class ModItems extends ModRegistries {
         STRONG_SHINY_INCENSE = register("strong_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         UBER_SHINY_INCENSE = register("uber_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         CARD = register("card", CardItem::new);
-        BOOSTER_PACK = register("booster_pack", BoosterPackItem::new);
         BASE_BOOSTER_PACK = register("base_booster_pack", () -> new BaseBoosterPackItem(new Item.Settings().fireproof().maxCount(1)));
         CARD_ALBUM = register("card_album", CardAlbumItem::new);
         LEGENDARY_PLACEHOLDER = register("legendary_placeholder", () -> new Item(new Item.Settings().maxCount(1)));

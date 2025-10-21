@@ -104,7 +104,7 @@ public class AcceptanceLetterItem extends Item {
             }
 
             MutableText text = Text.empty();
-            text.append(Text.translatable("item.academy.acceptance_letter.recipient"));
+            text.append(Text.translatable("item.journeysend.acceptance_letter.recipient"));
             text.append(styleText(name, time, 10.0F));
             tooltip.add(text);
         }

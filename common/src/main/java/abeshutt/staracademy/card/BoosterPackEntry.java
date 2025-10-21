@@ -81,37 +81,26 @@ public class BoosterPackEntry implements ISerializable<NbtCompound, JsonObject> 
 
     public List<CardData> generate(RandomSource random) {
         List<CardData> cards = new ArrayList<>();
-        System.out.println("[DEBUG] BoosterPackEntry.generate: Starting generation with " + this.pools.size() + " pools");
 
         for(Pool pool : this.pools) {
-            System.out.println("[DEBUG] BoosterPackEntry.generate: Processing pool with entry='" + pool.entry + "', probability=" + pool.probability);
             if(random.nextFloat() >= pool.probability) {
-                System.out.println("[DEBUG] BoosterPackEntry.generate: Pool failed probability check");
                 continue;
             }
             int count = pool.count.get(random).intValue();
-            System.out.println("[DEBUG] BoosterPackEntry.generate: Pool passed, generating " + count + " cards");
 
             for(int i = 0; i < count; i++) {
                 String id = ModConfigs.CARD_ENTRIES.flatten(pool.entry, random).orElse(null);
-                System.out.println("[DEBUG] BoosterPackEntry.generate: Flattened entry '" + pool.entry + "' to id: " + id);
                 if(id == null) {
-                    System.out.println("[DEBUG] BoosterPackEntry.generate: Flattened id is null, skipping");
                     continue;
                 }
 
                 ModConfigs.CARD_ENTRIES.get(id).ifPresent(entry -> {
                     CardData cardData = entry.generate(random);
-                    System.out.println("[DEBUG] BoosterPackEntry.generate: Generated card data: " + cardData);
                     cards.add(cardData);
                 });
-                if (!ModConfigs.CARD_ENTRIES.get(id).isPresent()) {
-                    System.out.println("[DEBUG] BoosterPackEntry.generate: No card entry found for id: " + id);
-                }
             }
         }
 
-        System.out.println("[DEBUG] BoosterPackEntry.generate: Final result: " + cards.size() + " cards generated");
         return cards;
     }
 

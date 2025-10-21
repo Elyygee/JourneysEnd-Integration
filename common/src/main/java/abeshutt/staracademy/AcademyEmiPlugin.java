@@ -1,14 +1,10 @@
 package abeshutt.staracademy;
 
-import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.init.ModBlocks;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.BoosterPackItem;
 import abeshutt.staracademy.item.CardAlbumItem;
-import abeshutt.staracademy.item.SafariTicketItem;
-import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonPosableModel;
-import com.cobblemon.mod.common.client.render.models.blockbench.repository.PokemonModelRepository;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -33,27 +29,21 @@ public class AcademyEmiPlugin implements EmiPlugin {
     }
 
     public void registerSafariTickets(EmiRegistry registry) {
-        SafariConfig.CLIENT.getTickets().forEach((id, entry) -> {
-            registry.addEmiStackAfter(EmiStack.of(SafariTicketItem.create(id)), stack -> {
-                return stack.getItemStack().getItem() == ModItems.SAFARI_TICKET.get();
-            });
-        });
-
-        registry.removeEmiStacks(stack -> {
-            return stack.getItemStack().getItem() == ModItems.SAFARI_TICKET.get()
-                    && SafariTicketItem.getEntry(stack.getItemStack(), true).isEmpty();
-        });
+        // Register the three specific safari ticket types
+        registry.addEmiStack(EmiStack.of(ModItems.SAFARI_TICKET_BASE.get()));
+        registry.addEmiStack(EmiStack.of(ModItems.SAFARI_TICKET_GREAT.get()));
+        registry.addEmiStack(EmiStack.of(ModItems.SAFARI_TICKET_GOLDEN.get()));
     }
 
     public void registerBoosterPacks(EmiRegistry registry) {
         ModConfigs.CARD_BOOSTERS.getValues().forEach((id, entry) -> {
             registry.addEmiStackAfter(EmiStack.of(BoosterPackItem.create(id)), stack -> {
-                return stack.getItemStack().getItem() == ModItems.BOOSTER_PACK.get();
+                return stack.getItemStack().getItem() == ModItems.BASE_BOOSTER_PACK.get();
             });
         });
 
         registry.removeEmiStacks(stack -> {
-            return stack.getItemStack().getItem() == ModItems.BOOSTER_PACK.get()
+            return stack.getItemStack().getItem() == ModItems.BASE_BOOSTER_PACK.get()
                     && BoosterPackItem.get(stack.getItemStack(), true).isEmpty();
         });
     }

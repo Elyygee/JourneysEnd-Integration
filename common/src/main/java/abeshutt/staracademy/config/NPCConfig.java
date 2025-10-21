@@ -40,7 +40,7 @@ public class NPCConfig extends FileConfig {
         this.partnerNpcName = "Professor";
         this.cardGraderNpcName = "Hatsune Miku";
         this.gradingCurrencyCost = 10000;
-        this.gradingTimeMillis = 1000 * 5;
+        this.gradingTimeMillis = 1000 * 3600; // 1 hour
         this.safariCurrencyCost = 50000;
     }
 

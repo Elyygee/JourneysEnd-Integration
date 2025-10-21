@@ -93,7 +93,7 @@ public class SafariConfig extends FileConfig {
     protected void reset() {
         this.resetWorld = false;
         this.seed = -22L;
-        this.structure = StarAcademyMod.id("safari_spawn");
+        this.structure = net.minecraft.util.Identifier.of("journeysend", "safari_spawn");
         this.placementOffset = new BlockPos(335, 54, 134);
         this.spawnPositionRelative = new BlockPos(102, 3, 78);
         this.spawnYaw = -180.0F;

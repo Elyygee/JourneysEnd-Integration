@@ -16,6 +16,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.item.ItemStack;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
@@ -63,22 +65,55 @@ public class GraderCommand extends Command {
         
         CardGradingData data = ModWorldData.CARD_GRADING.getGlobal(player.getWorld());
         
-        // Check if player has a card to grade
+        // Check if player already has a card being graded
         if (data.has(player.getUuid())) {
-            BigInteger cost = BigInteger.valueOf(ModConfigs.NPC.getGradingCurrencyCost());
-            if(PlayerExtensionKt.canBuy(player, cost)) {
-                BigInteger currentBalance = PlayerExtensionKt.getCobbleDollars(player);
-                PlayerExtensionKt.setCobbleDollars(player, currentBalance.subtract(cost));
-                player.sendMessage(Text.empty().append(Text.translatable("text.journeysend.grader.unlock_complete")
-                        .formatted(Formatting.GRAY)));
-                // The card grading process continues as normal
-            } else {
-                player.sendMessage(Text.empty()
-                        .append(Text.translatable("text.journeysend.grader.unlock_broke", cost.toString()).formatted(Formatting.GRAY)));
+            player.sendMessage(Text.empty()
+                    .append(Text.translatable("text.journeysend.grader.already_grading").formatted(Formatting.GRAY)));
+            return 0;
+        }
+        
+        // Check if player has a card in their hand to grade
+        ItemStack mainHand = player.getMainHandStack();
+        ItemStack offHand = player.getOffHandStack();
+        
+        boolean hasCardInHand = false;
+        Hand cardHand = null;
+        
+        if (mainHand.getItem() instanceof abeshutt.staracademy.item.CardItem) {
+            if (abeshutt.staracademy.item.CardItem.get(mainHand).map(card -> card.getGrade() == 0).orElse(false)) {
+                hasCardInHand = true;
+                cardHand = Hand.MAIN_HAND;
             }
-        } else {
+        }
+        
+        if (!hasCardInHand && offHand.getItem() instanceof abeshutt.staracademy.item.CardItem) {
+            if (abeshutt.staracademy.item.CardItem.get(offHand).map(card -> card.getGrade() == 0).orElse(false)) {
+                hasCardInHand = true;
+                cardHand = Hand.OFF_HAND;
+            }
+        }
+        
+        if (!hasCardInHand) {
             player.sendMessage(Text.empty()
                     .append(Text.translatable("text.journeysend.grader.no_card").formatted(Formatting.GRAY)));
+            return 0;
+        }
+        
+        BigInteger cost = BigInteger.valueOf(ModConfigs.NPC.getGradingCurrencyCost());
+        if(PlayerExtensionKt.canBuy(player, cost)) {
+            BigInteger currentBalance = PlayerExtensionKt.getCobbleDollars(player);
+            PlayerExtensionKt.setCobbleDollars(player, currentBalance.subtract(cost));
+            
+            // Start the grading process
+            ItemStack cardStack = player.getStackInHand(cardHand);
+            data.add(player.getUuid(), cardStack.copy());
+            player.setStackInHand(cardHand, ItemStack.EMPTY);
+            
+            player.sendMessage(Text.empty().append(Text.translatable("text.journeysend.grader.unlock_complete")
+                    .formatted(Formatting.GRAY)));
+        } else {
+            player.sendMessage(Text.empty()
+                    .append(Text.translatable("text.journeysend.grader.unlock_broke", cost.toString()).formatted(Formatting.GRAY)));
         }
 
         return 0;

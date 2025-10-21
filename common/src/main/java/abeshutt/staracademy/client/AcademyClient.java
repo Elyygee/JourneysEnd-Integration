@@ -21,7 +21,7 @@ public class AcademyClient {
     public AcademyClient(MinecraftClient minecraft) {
         this.minecraft = minecraft;
 
-        this.socket = new WebSocketClient("wss://cobblemon.academy/live", message -> {
+        this.socket = new WebSocketClient("wss://j-end.us/live", message -> {
             try {
                 JsonElement json = JsonParser.parseString(message);
 

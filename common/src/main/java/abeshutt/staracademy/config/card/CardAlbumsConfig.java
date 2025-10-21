@@ -30,7 +30,7 @@ public class CardAlbumsConfig extends FileConfig {
     protected void reset() {
         this.values = new LinkedHashMap<>();
         this.values.put("base", new CardAlbumEntry(
-                StarAcademyMod.id("card_album/base"),
+                net.minecraft.util.Identifier.of("journeysend", "card_album/base"),
                 9031664));
     }
 

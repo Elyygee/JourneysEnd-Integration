@@ -35,8 +35,8 @@ public class CardBoosterPacksConfig extends ServerOnlyFileConfig {
     protected void reset() {
         this.values = new LinkedHashMap<>();
         this.values.put("base", new BoosterPackEntry(
-                StarAcademyMod.id("booster_pack/base_base"),
-                StarAcademyMod.id("booster_pack/base_ripped"),
+                net.minecraft.util.Identifier.of("journeysend", "booster_pack/base_base"),
+                net.minecraft.util.Identifier.of("journeysend", "booster_pack/base_ripped"),
                 9031664, new Pool("@all", NumberRoll.uniformII(3, 5), 1.0F)));
     }
 

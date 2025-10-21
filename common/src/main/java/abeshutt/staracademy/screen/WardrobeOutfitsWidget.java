@@ -190,7 +190,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
             context.getMatrices().translate(x + 24, y + 11, 0);
             context.getMatrices().scale(scale, scale, scale);
             context.drawText(textRenderer,
-                    Text.translatable("item.academy.outfit." + outfitId),
+                    Text.translatable("item.journeysend.outfit." + outfitId),
                     0, 0, 0xFF_FFFFFF, false);
             context.getMatrices().pop();
 

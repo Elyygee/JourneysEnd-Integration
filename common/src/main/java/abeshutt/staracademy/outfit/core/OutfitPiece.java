@@ -51,7 +51,7 @@ public abstract class OutfitPiece {
             this.classicModelJson.add("texture", textureJson);
 
             JsonObject modelJson = new JsonObject();
-            modelJson.addProperty("name", "item.academy.outfit." + this.id);
+            modelJson.addProperty("name", "item.journeysend.outfit." + this.id);
             modelJson.addProperty("icon", this.texture.icon.toString());
             modelJson.add("classic", this.classicModelJson);
 

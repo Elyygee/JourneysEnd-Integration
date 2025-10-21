@@ -154,7 +154,7 @@ public class EntityState implements ISerializable<NbtCompound, JsonObject> {
         Identifier dimensionId = Adapters.IDENTIFIER.readNbt(nbt.get("dimension")).orElseThrow();
         
         // Migration: Convert academy:safari to journeysend:safari
-        if("academy".equals(dimensionId.getNamespace()) && "safari".equals(dimensionId.getPath())) {
+        if("journeysend".equals(dimensionId.getNamespace()) && "safari".equals(dimensionId.getPath())) {
             dimensionId = Identifier.of("journeysend", "safari");
         }
         

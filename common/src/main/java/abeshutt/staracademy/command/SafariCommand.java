@@ -4,7 +4,6 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.block.SafariPortalBlock;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.item.SafariTicketItem;
 import abeshutt.staracademy.world.data.SafariData;
 import fr.harmex.cobbledollars.common.utils.extensions.PlayerExtensionKt;
 import java.math.BigInteger;
@@ -94,8 +93,9 @@ public class SafariCommand extends Command {
         for(ServerPlayerEntity player : players) {
             SafariData.Entry entry = data.getOrCreate(player.getUuid());
             entry.setTimeLeft(entry.getTimeLeft() + time);
-            context.getSource().sendFeedback(() -> SafariTicketItem.getTimeMessage(player, time, false), true);
-            player.sendMessage(SafariTicketItem.getTimeMessage(player, time, true), false);
+            Text timeMessage = getTimeMessage(player, time, false);
+            context.getSource().sendFeedback(() -> timeMessage, true);
+            player.sendMessage(getTimeMessage(player, time, true), false);
         }
 
         return 0;
@@ -284,6 +284,33 @@ public class SafariCommand extends Command {
         player.sendMessage(Text.empty()
                 .append(Text.translatable("text.journeysend.safari.unlock_cancelled").formatted(Formatting.GRAY)));
         return 0;
+    }
+
+    private Text getTimeMessage(ServerPlayerEntity target, long ticks, boolean personal) {
+        if(ticks >= 0) {
+            return Text.empty()
+                .append(Text.literal("Added ").formatted(Formatting.GREEN))
+                .append(Text.literal(formatTimeString(ticks)).formatted(Formatting.WHITE))
+                .append(Text.literal(" to ").formatted(Formatting.GRAY))
+                .append(personal ? Text.literal("your").formatted(Formatting.GRAY) : target.getName())
+                .append(Text.literal(personal ? " Safari." : "'s Safari timer.").formatted(Formatting.GRAY));
+        } else {
+            return Text.empty()
+                .append(Text.literal("Removed ").formatted(Formatting.RED))
+                .append(Text.literal(formatTimeString(-ticks)).formatted(Formatting.WHITE))
+                .append(Text.literal(" from ").formatted(Formatting.GRAY))
+                .append(personal ? Text.literal("your").formatted(Formatting.GRAY) : target.getName())
+                .append(Text.literal(personal ? " Safari." : "'s Safari timer.").formatted(Formatting.GRAY));
+        }
+    }
+
+    private String formatTimeString(long remainingTicks) {
+        long seconds = (remainingTicks / 20) % 60;
+        long minutes = ((remainingTicks / 20) / 60) % 60;
+        long hours = ((remainingTicks / 20) / 60) / 60;
+        return hours > 0
+                ? String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                : String.format("%02d:%02d", minutes, seconds);
     }
 
 }
