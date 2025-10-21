@@ -14,13 +14,14 @@
 
 ### 🎒 Safari Dimension
 - Portal-based travel to a custom Safari dimension
+- CobbleDollars-based unlock system with confirmation dialogs
 - Time-limited access with configurable duration
 - Portal anchors remember entry points
 - Admin controls for access management
 
 ### 🃏 Card Grading System
 - Collectible Pokémon cards with rarity tiers
-- NPC card graders for evaluation
+- NPC card graders for evaluation with CobbleDollars payment
 - Grade-based stat modifications
 - Card album storage and organization
 
@@ -58,6 +59,7 @@ All features are configurable via JSON in the config directory.
 - **Mods:**
   - Enhanced Celestials (**required**)
   - Cobblemon (**required**)
+  - CobbleDollars (**required** for NPC payments)
   - Eternal Starlight (**optional**, for dimension support)
 
 ---
@@ -66,7 +68,7 @@ All features are configurable via JSON in the config directory.
 
 1. Install Fabric Loader for Minecraft 1.21.1.  
 2. Install Fabric API (if not already present).  
-3. Download and place required mods (Cobblemon, Enhanced Celestials) into `/mods`.  
+3. Download and place required mods (Cobblemon, Enhanced Celestials, CobbleDollars) into `/mods`.  
 4. (Optional) Add Eternal Starlight for expanded dimension support.  
 5. Launch the game once to generate configs, then tweak values under `/config/JourneysEnd/`.
 
