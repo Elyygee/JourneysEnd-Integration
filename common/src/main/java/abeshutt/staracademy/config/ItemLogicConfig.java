@@ -11,7 +11,7 @@ import java.util.Optional;
 import static abeshutt.staracademy.util.ItemUseLogic.CommandExecutionContext.PLAYER;
 import static abeshutt.staracademy.util.ItemUseLogic.CommandExecutionContext.SERVER;
 
-public class ItemLogicConfig extends FileConfig {
+public class ItemLogicConfig extends ServerOnlyFileConfig {
 
     @Expose private List<ItemUseLogic> use;
 
@@ -33,7 +33,7 @@ public class ItemLogicConfig extends FileConfig {
     @Override
     protected void reset() {
         this.use = new ArrayList<>();
-        this.use.add(new ItemUseLogic("journeysend:rewards", false, PLAYER, "/dexrewards rewards"));
+        this.use.add(new ItemUseLogic("journeysend:rewards", false, PLAYER, "/dex rewards"));
         this.use.add(new ItemUseLogic("journeysend:shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 2 20 minutes"));
         this.use.add(new ItemUseLogic("journeysend:strong_shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 3 40 minutes"));
         this.use.add(new ItemUseLogic("journeysend:uber_shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 4 60 minutes"));

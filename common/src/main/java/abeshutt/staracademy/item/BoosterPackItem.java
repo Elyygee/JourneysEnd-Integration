@@ -27,6 +27,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,8 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class BoosterPackItem extends Item implements ISpecialItemModel {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("JourneysEnd-BoosterPack");
 
     public BoosterPackItem() {
         super(new Settings().fireproof().maxCount(1));
@@ -79,13 +83,17 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        user.setCurrentHand(hand);
-
+        LOGGER.info("[BoosterPack] use() called - isClient: {}, hand: {}, hasContainer: {}", 
+            world.isClient, hand, stack.contains(DataComponentTypes.CONTAINER));
+        
+        // First click: Generate cards if not already generated
         if(!world.isClient() && !stack.contains(DataComponentTypes.CONTAINER)) {
+            LOGGER.info("[BoosterPack] Server-side: No container found, generating cards...");
             BoosterPackItem.get(stack, false).ifPresent(entry -> {
                 List<ItemStack> items = new ArrayList<>();
 
                 List<CardData> cardDataList = entry.generate(JavaRandom.ofNanoTime());
+                LOGGER.info("[BoosterPack] Generated {} cards", cardDataList.size());
 
                 for(CardData data : cardDataList) {
                     ItemStack cardItem = CardItem.of(data);
@@ -93,13 +101,24 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
                 }
 
                 stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(new ArrayList<>(items)));
+                LOGGER.info("[BoosterPack] Cards stored in CONTAINER component");
             });
+            // Return success on first click (card generation)
+            LOGGER.info("[BoosterPack] Returning success (first click)");
+            return TypedActionResult.success(stack, false);
         }
-
-        if(world.isClient()) {
+        
+        // Second click: Open GUI to select cards
+        if(world.isClient() && stack.contains(DataComponentTypes.CONTAINER)) {
+            LOGGER.info("[BoosterPack] Client-side: Container exists, opening GUI...");
+            user.setCurrentHand(hand);
             this.openScreen();
+            LOGGER.info("[BoosterPack] GUI opened");
+        } else if (world.isClient() && !stack.contains(DataComponentTypes.CONTAINER)) {
+            LOGGER.info("[BoosterPack] Client-side: No container found, waiting for server...");
         }
 
+        LOGGER.info("[BoosterPack] Returning consume");
         return TypedActionResult.consume(stack);
     }
 

@@ -1,5 +1,8 @@
 package abeshutt.staracademy.compat.enhancedcelestials
 
+import abeshutt.staracademy.compat.enhancedcelestials.block.LunarForecastHologramBlock
+import abeshutt.staracademy.compat.enhancedcelestials.block.entity.LunarForecastHologramBlockEntity
+import abeshutt.staracademy.init.ModBlocks
 import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.api.events.pokemon.ExperienceGainedPreEvent
 import com.cobblemon.mod.common.api.events.pokemon.ShinyChanceCalculationEvent
@@ -11,13 +14,32 @@ import com.cobblemon.mod.common.api.spawning.influence.SpawningInfluence
 import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawnerFactory
 import com.cobblemon.mod.common.pokemon.IVs
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.block.AbstractBlock
+import net.minecraft.block.Blocks
+import net.minecraft.block.entity.BlockEntityType
+import net.minecraft.item.BlockItem
+import net.minecraft.item.Item
 import net.minecraft.registry.tag.TagKey
 import net.minecraft.util.Identifier
 import abeshutt.staracademy.config.LunarBoostConfig
+import dev.architectury.registry.registries.RegistrySupplier
 
 object EnhancedCelestialsCompat {
     // Create our own Aurora Moon tag like ACADEMY does
     private val AURORA_MOON_IDENTIFIER = Identifier.of("enhancedcelestials", "aurora_moon")
+    
+    // Lunar Forecast Hologram registration
+    val LUNAR_FORECAST_HOLOGRAM_BLOCK: RegistrySupplier<LunarForecastHologramBlock> = ModBlocks.register(
+        "lunar_forecast_hologram",
+        { LunarForecastHologramBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).luminance { state -> if (state.get(LunarForecastHologramBlock.LIT)) 5 else 0 }) },
+        { block -> BlockItem(block.get(), Item.Settings()) }
+    )
+    
+    val LUNAR_FORECAST_HOLOGRAM_BLOCK_ENTITY: RegistrySupplier<BlockEntityType<LunarForecastHologramBlockEntity>> = ModBlocks.Entities.register(
+        "lunar_forecast_hologram",
+        { pos, state -> LunarForecastHologramBlockEntity(pos, state) },
+        LUNAR_FORECAST_HOLOGRAM_BLOCK
+    )
     
     @JvmStatic
     fun init() {

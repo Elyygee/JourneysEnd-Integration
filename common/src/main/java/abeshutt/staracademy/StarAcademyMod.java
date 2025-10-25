@@ -200,7 +200,10 @@ public final class StarAcademyMod {
             // Try Fabric-specific command registration first
             Class<?> fabricCommandClass = Class.forName("abeshutt.staracademy.fabric.FabricLunarEventCommand");
             LOGGER.info("Journey's End: Found FabricLunarEventCommand class");
-            fabricCommandClass.getDeclaredMethod("register").invoke(null);
+            
+            // Get the INSTANCE field for the Kotlin object
+            Object instance = fabricCommandClass.getField("INSTANCE").get(null);
+            fabricCommandClass.getDeclaredMethod("register").invoke(instance);
             LOGGER.info("Journey's End: Lunar event commands registered successfully");
         } catch (Exception e) {
             LOGGER.warn("Journey's End: Failed to register lunar event commands: {}", e.getMessage());

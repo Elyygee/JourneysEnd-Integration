@@ -32,9 +32,8 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> CARD_ALBUM;
     public static RegistrySupplier<Item> LEGENDARY_PLACEHOLDER;
     public static RegistrySupplier<AcceptanceLetterItem> ACCEPTANCE_LETTER;
-    public static RegistrySupplier<PokeBallItem> GREAT_SAFARI_BALL;
-    public static RegistrySupplier<PokeBallItem> GOLDEN_SAFARI_BALL;
-    public static Supplier<Set<PokeBallItem>> SAFARI_BALLS = () -> Set.of(CobblemonItems.SAFARI_BALL, GREAT_SAFARI_BALL.get(), GOLDEN_SAFARI_BALL.get());
+    public static RegistrySupplier<Item> GREAT_SAFARI_BALL;
+    public static RegistrySupplier<Item> GOLDEN_SAFARI_BALL;
 
     public static void register() {
         DEX_REWARDS = register("rewards", () -> new DexRewardsItem(new Item.Settings().maxCount(1).fireproof()));
@@ -49,12 +48,21 @@ public class ModItems extends ModRegistries {
         STRONG_SHINY_INCENSE = register("strong_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         UBER_SHINY_INCENSE = register("uber_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         CARD = register("card", CardItem::new);
-        BASE_BOOSTER_PACK = register("base_booster_pack", () -> new BaseBoosterPackItem(new Item.Settings().fireproof().maxCount(1)));
+        BASE_BOOSTER_PACK = register("booster_pack", () -> new BaseBoosterPackItem(new Item.Settings().fireproof().maxCount(1)));
         CARD_ALBUM = register("card_album", CardAlbumItem::new);
         LEGENDARY_PLACEHOLDER = register("legendary_placeholder", () -> new Item(new Item.Settings().maxCount(1)));
         ACCEPTANCE_LETTER = register("acceptance_letter", AcceptanceLetterItem::new);
-        GREAT_SAFARI_BALL = register("great_safari_ball", () -> new PokeBallItem(ModPokeBalls.GREAT_SAFARI_BALL));
-        GOLDEN_SAFARI_BALL = register("golden_safari_ball", () -> new PokeBallItem(ModPokeBalls.GOLDEN_SAFARI_BALL));
+        // Register Safari Balls as PokeBallItems
+        GREAT_SAFARI_BALL = register("great_safari_ball", () -> {
+            PokeBallItem item = new PokeBallItem(ModPokeBalls.GREAT_SAFARI_BALL);
+            ModPokeBalls.GREAT_SAFARI_BALL.item = item;
+            return item;
+        });
+        GOLDEN_SAFARI_BALL = register("golden_safari_ball", () -> {
+            PokeBallItem item = new PokeBallItem(ModPokeBalls.GOLDEN_SAFARI_BALL);
+            ModPokeBalls.GOLDEN_SAFARI_BALL.item = item;
+            return item;
+        });
 
         register("roasted_aguav_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_apicot_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));

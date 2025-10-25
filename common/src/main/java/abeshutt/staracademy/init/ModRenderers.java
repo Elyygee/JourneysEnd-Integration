@@ -6,10 +6,12 @@ import abeshutt.staracademy.block.entity.ShinyPokedollCollectorBlockEntity;
 import abeshutt.staracademy.block.entity.renderer.BetterStructureBlockEntityRenderer;
 import abeshutt.staracademy.block.entity.renderer.HousePokedexBlockEntityRenderer;
 import abeshutt.staracademy.block.entity.renderer.ShinyPokedollCollectorBlockEntityRenderer;
+import abeshutt.staracademy.compat.enhancedcelestials.client.EnhancedCelestialsCompatClient;
 import abeshutt.staracademy.entity.renderer.HumanEntityRenderer;
 import abeshutt.staracademy.entity.renderer.ShootingStarRenderer;
 import abeshutt.staracademy.mixin.ProxyModelPredicateProviderRegistry;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.platform.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -54,6 +56,11 @@ public class ModRenderers extends ModRegistries {
                 STRUCTURE_BLOCK = register(registry, ModBlocks.Entities.STRUCTURE_BLOCK.get(), BetterStructureBlockEntityRenderer::new);
                 HOUSE_POKEDEX = register(registry, ModBlocks.Entities.HOUSE_POKEDEX.get(), HousePokedexBlockEntityRenderer::new);
                 SHINY_POKEDEX = register(registry, ModBlocks.Entities.SHINY_POKEDOLL_COLLECTOR.get(), ShinyPokedollCollectorBlockEntityRenderer::new);
+                
+                // Register Enhanced Celestials renderers if the mod is loaded
+                if (Platform.isModLoaded("enhancedcelestials")) {
+                    EnhancedCelestialsCompatClient.registerBlockEntityRenderers(registry);
+                }
             } catch(Exception e) {
                 ClientLifecycleEvent.CLIENT_SETUP.register(minecraft -> {
                     STRUCTURE_BLOCK = register(registry, ModBlocks.Entities.STRUCTURE_BLOCK.get(), BetterStructureBlockEntityRenderer::new);
@@ -70,6 +77,11 @@ public class ModRenderers extends ModRegistries {
 
         public static void registerBlockModelRenderers(BiConsumer<Block, RenderLayer> consumer) {
             consumer.accept(ModBlocks.SHINY_POKEDOLL_COLLECTOR.get(), RenderLayer.getCutout());
+            
+            // Register Enhanced Celestials block renderers if the mod is loaded
+            if (Platform.isModLoaded("enhancedcelestials")) {
+                EnhancedCelestialsCompatClient.registerBlockModelRenderers(consumer);
+            }
         }
     }
 

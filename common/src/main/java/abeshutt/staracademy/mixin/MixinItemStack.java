@@ -46,14 +46,26 @@ public abstract class MixinItemStack {
         return true; // Indicate that we handled this item
     }
 
-    // 1) Before air use - handle items that don't have custom use methods
-    @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    private void je$beforeUse(World world, PlayerEntity user, Hand hand,
+    // 1) After air use - handle items that execute ItemUseLogic commands
+    @Inject(method = "use", at = @At("TAIL"))
+    private void je$afterUse(World world, PlayerEntity user, Hand hand,
                              CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        // Check if this item has ItemUseLogic and handle it
-        if (je$runLogicIfMatch(world, user, hand)) {
-            // We handled this item, return success to prevent default behavior
-            cir.setReturnValue(TypedActionResult.success(user.getStackInHand(hand)));
+        // Run ItemUseLogic if available, but don't cancel the original action
+        // This allows custom items (like BoosterPackItem) to execute their own logic first
+        ItemStack stack = user.getStackInHand(hand);
+        ItemUseLogic logic = ModConfigs.ITEM_LOGIC.getUseLogic(stack).orElse(null);
+        if (logic != null && cir.getReturnValue().getResult().isAccepted()) {
+            // Only execute commands if the item action was successful
+            if (world.isClient || !(user instanceof ServerPlayerEntity sp)) return;
+            
+            for (String cmd : logic.getCommands()) {
+                String rendered = cmd
+                    .replace("${user_uuid}", UuidUtils.toString(user.getUuid()))
+                    .replace("${user_name}", user.getGameProfile().getName());
+                runUseLogic(world, sp, logic, rendered);
+            }
+            
+            // Note: Don't consume the item here as the custom item's use() handles that
         }
     }
 

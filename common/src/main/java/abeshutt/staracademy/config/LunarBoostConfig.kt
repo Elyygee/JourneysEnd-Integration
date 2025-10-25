@@ -41,6 +41,13 @@ class LunarBoostConfig : LunarConfigBase() {
     @Expose
     var superAuroraMoonRarePokemonSpawnMultiplier: Float = 8.0f
     
+    // Lunar Forecast Hologram Settings
+    @Expose
+    var hologramSwitchTime: Int = 20 // ticks between switches (1 second at 20 TPS)
+    
+    @Expose
+    var forecastDayView: Int = 7 // days ahead to show in forecast
+    
     // Configuration file path
     override fun getPath(): String {
         val configDir = FabricLoader.getInstance().configDir.toFile()
@@ -67,6 +74,10 @@ class LunarBoostConfig : LunarConfigBase() {
         // Aurora Moon defaults
         auroraMoonRarePokemonSpawnMultiplier = 4.8f
         superAuroraMoonRarePokemonSpawnMultiplier = 8.0f
+        
+        // Hologram defaults
+        hologramSwitchTime = 20
+        forecastDayView = 7
     }
     
     companion object {
