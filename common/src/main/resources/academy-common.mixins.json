@@ -55,6 +55,7 @@
     "cobblemon.MixinCodecUtils",
     "cobblemon.MixinFormDexRecord",
     "cobblemon.MixinPlayerSpawnerFactory",
+    "cobblemon.MixinPokeBall",
     "cobblemon.MixinPokeBallItem",
     "cobblemon.MixinPokeBalls",
     // "cobblemon.MixinPokemonBattle", // Temporarily disabled due to conflict with cobblemon-integrations

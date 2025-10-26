@@ -26,10 +26,13 @@ public abstract class MixinPokeBallItem {
             || item == ModItems.GREAT_SAFARI_BALL.get() 
             || item == ModItems.GOLDEN_SAFARI_BALL.get();
         
+        boolean inSafariDimension = world.getRegistryKey() == StarAcademyMod.SAFARI;
+        
         // Safari Balls can only be used in Safari dimension
         // Other PokeBalls cannot be used in Safari dimension
-        if(world.getRegistryKey() == StarAcademyMod.SAFARI && !isSafariBall
-            || world.getRegistryKey() != StarAcademyMod.SAFARI && isSafariBall) {
+        boolean shouldCancel = (inSafariDimension && !isSafariBall) || (!inSafariDimension && isSafariBall);
+        
+        if(shouldCancel) {
             ci.setReturnValue(TypedActionResult.success(player.getStackInHand(usedHand), world.isClient));
         }
     }

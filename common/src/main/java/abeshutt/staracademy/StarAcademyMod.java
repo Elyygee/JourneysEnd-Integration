@@ -3,6 +3,7 @@ package abeshutt.staracademy;
 import abeshutt.staracademy.attribute.Attributes;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
+import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModRegistries;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
@@ -80,8 +81,29 @@ public final class StarAcademyMod {
         });
 
         CommonEvents.POKEMON_CATCH_RATE.register(event -> {
+            // Prevent non-Safari Balls from catching in Safari dimension
             if(event.getThrower().getWorld().getRegistryKey() == SAFARI) {
-                if(event.getPokeBallEntity().getPokeBall().item() != CobblemonItems.SAFARI_BALL) {
+                // Check if this is any Safari Ball (original or custom)
+                var pokeBallItem = event.getPokeBallEntity().getPokeBall().item();
+                boolean isSafariBall = pokeBallItem == CobblemonItems.SAFARI_BALL 
+                    || pokeBallItem == ModItems.GREAT_SAFARI_BALL.get() 
+                    || pokeBallItem == ModItems.GOLDEN_SAFARI_BALL.get();
+                
+                if(!isSafariBall) {
+                    // Set catch rate to 0 to prevent non-Safari Balls from working
+                    event.setCatchRate(0.0F);
+                }
+            }
+            
+            // Prevent Safari Balls from working outside Safari dimension
+            else {
+                var pokeBallItem = event.getPokeBallEntity().getPokeBall().item();
+                boolean isSafariBall = pokeBallItem == CobblemonItems.SAFARI_BALL 
+                    || pokeBallItem == ModItems.GREAT_SAFARI_BALL.get() 
+                    || pokeBallItem == ModItems.GOLDEN_SAFARI_BALL.get();
+                
+                if(isSafariBall) {
+                    // Safari Balls don't work outside the Safari dimension
                     event.setCatchRate(0.0F);
                 }
             }
