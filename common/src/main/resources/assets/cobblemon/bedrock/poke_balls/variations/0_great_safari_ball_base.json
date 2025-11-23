@@ -1,0 +1,13 @@
+{
+  "pokeball": "journeysend:great_safari_ball",
+  "order": 0,
+  "variations": [
+    {
+      "aspects": [],
+      "poser": "cobblemon:poke_ball",
+      "model": "cobblemon:poke_ball.geo",
+      "texture": "cobblemon:textures/poke_balls/great_safari_ball.png",
+      "layers": []
+    }
+  ]
+}

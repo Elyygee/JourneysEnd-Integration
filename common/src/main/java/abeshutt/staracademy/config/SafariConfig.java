@@ -1,6 +1,5 @@
 package abeshutt.staracademy.config;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.item.SafariTicketEntry;
 import abeshutt.staracademy.world.roll.IntRoll;
 import com.google.gson.annotations.Expose;
@@ -28,6 +27,7 @@ public class SafariConfig extends FileConfig {
     @Expose private long restartDelay;
     @Expose private boolean paused;
     @Expose private boolean resetWorld;
+    @Expose private float alphaSpawnRateMultiplier = 5.0f; // 5x increase for safari by default
     @Expose private Map<String, SafariTicketEntry> tickets = new HashMap<>();
 
     @Override
@@ -89,6 +89,14 @@ public class SafariConfig extends FileConfig {
         return Optional.ofNullable(this.tickets.get(id));
     }
 
+    public float getAlphaSpawnRateMultiplier() {
+        return this.alphaSpawnRateMultiplier;
+    }
+
+    public void setAlphaSpawnRateMultiplier(float multiplier) {
+        this.alphaSpawnRateMultiplier = multiplier;
+    }
+
     @Override
     protected void reset() {
         this.resetWorld = false;
@@ -103,6 +111,7 @@ public class SafariConfig extends FileConfig {
         this.startEpoch = 25200000;
         this.restartDelay = 1000 * 60 * 60 * 24;
         this.paused = false;
+        this.alphaSpawnRateMultiplier = 5.0f;
 
         this.tickets = new LinkedHashMap<>();
 

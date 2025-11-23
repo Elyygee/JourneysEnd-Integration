@@ -275,7 +275,7 @@ public class PokemonStarterData extends WorldData {
                         other.sendMessage(Text.empty()
                                 .append(player.getName())
                                 .append(Text.literal(" has claimed ").formatted(Formatting.GRAY))
-                                .append(pokemon.getDisplayName().setStyle(Style.EMPTY.withColor(pokemon.getSpecies().getPrimaryType().getHue())))
+                                .append(pokemon.getDisplayName(false).setStyle(Style.EMPTY.withColor(pokemon.getSpecies().getPrimaryType().getHue())))
                                 .append(Text.literal(" as their starter!").formatted(Formatting.GRAY)));
                     }
                 });
@@ -335,7 +335,7 @@ public class PokemonStarterData extends WorldData {
                 }
 
                 Cobblemon.INSTANCE.getStorage().getParty(player).add(eventPokemon);
-                CobblemonCriteria.INSTANCE.getPICK_STARTER().trigger(player, pokemon);
+                CobblemonCriteria.PICK_STARTER.trigger(player, pokemon);
                 Cobblemon.playerDataManager.saveSingle(playerData, PlayerInstancedDataStoreTypes.INSTANCE.getGENERAL());
                 playerData.sendToPlayer(player);
                 return Unit.INSTANCE;

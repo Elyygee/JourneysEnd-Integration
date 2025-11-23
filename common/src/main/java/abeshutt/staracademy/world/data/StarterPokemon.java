@@ -7,6 +7,7 @@ import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.google.gson.JsonElement;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 
 import java.util.HashSet;
@@ -38,7 +39,7 @@ public class StarterPokemon {
     }
 
     public RenderablePokemon asRenderable() {
-        return new RenderablePokemon(this.species, this.aspects);
+        return new RenderablePokemon(this.species, this.aspects, ItemStack.EMPTY);
     }
 
     public static class Adapter implements ISimpleAdapter<StarterPokemon, NbtElement, JsonElement> {
@@ -80,7 +81,7 @@ public class StarterPokemon {
             }
 
             StarterId id = Adapters.STARTER_ID.readBits(buffer).orElseThrow();
-            Species species = PokemonSpecies.INSTANCE.getByIdentifier(Adapters.IDENTIFIER.readBits(buffer).orElseThrow());
+            Species species = PokemonSpecies.getByIdentifier(Adapters.IDENTIFIER.readBits(buffer).orElseThrow());
             Set<String> aspects = new HashSet<>();
             int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
 

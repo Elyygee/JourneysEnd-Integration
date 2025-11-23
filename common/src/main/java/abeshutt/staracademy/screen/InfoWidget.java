@@ -19,7 +19,7 @@ import com.cobblemon.mod.common.client.gui.summary.widgets.SoundlessWidget;
 import com.cobblemon.mod.common.client.render.RenderHelperKt;
 import com.cobblemon.mod.common.client.render.models.blockbench.FloatingState;
 import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonPosableModel;
-import com.cobblemon.mod.common.client.render.models.blockbench.repository.PokemonModelRepository;
+// import com.cobblemon.mod.common.client.render.models.blockbench.repository.PokemonModelRepository; // Removed in Cobblemon 1.7
 import com.cobblemon.mod.common.entity.PoseType;
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.Gender;
@@ -361,7 +361,7 @@ public class InfoWidget extends SoundlessWidget {
             PokemonGuiUtilsKt.drawProfilePokemon(this.renderablePokemon, matrices,
                     QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), rotationVector),
                     this.poseList.get(this.selectedPoseIndex), this.state, delta, 20F,
-                    true, false, 1F, 1F, 1F, 1F);
+                    true, false, 1F, 1F, 1F, 1F, 0f, 0f);
 
             matrices.pop();
             context.disableScissor();
@@ -630,7 +630,7 @@ public class InfoWidget extends SoundlessWidget {
             aspects.addAll(this.variationButtons.stream().filter(VariationButtonWrapper::isVisible)
                     .map(VariationButtonWrapper::getAspect).toList());
 
-            this.renderablePokemon = new RenderablePokemon(species, aspects);
+            this.renderablePokemon = new RenderablePokemon(species, aspects, net.minecraft.item.ItemStack.EMPTY);
             this.recalculatePoses(this.renderablePokemon);
             this.updateForm.invoke(this.visibleForms.get(this.selectedFormIndex));
         }
@@ -640,7 +640,9 @@ public class InfoWidget extends SoundlessWidget {
         FloatingState state = new FloatingState();
         state.setCurrentAspects(renderablePokemon.getAspects());
 
-        PokemonPosableModel poser = PokemonModelRepository.INSTANCE.getPoser(renderablePokemon.getSpecies().resourceIdentifier, state);
+        // TODO: Fix PokemonModelRepository usage for Cobblemon 1.7
+        // PokemonPosableModel poser = PokemonModelRepository.INSTANCE.getPoser(renderablePokemon.getSpecies().resourceIdentifier, state);
+        com.cobblemon.mod.common.client.render.models.blockbench.PosableModel poser = com.cobblemon.mod.common.client.render.models.blockbench.repository.VaryingModelRepository.INSTANCE.getPoser(renderablePokemon.getSpecies().resourceIdentifier, state);
         state.setCurrentModel(poser);
 
         this.poseList = poser.getPoses().values().stream()

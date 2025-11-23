@@ -25,6 +25,8 @@ import java.util.Collection;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
+import com.mojang.brigadier.arguments.FloatArgumentType;
+
 public class SafariCommand extends Command {
 
     @Override
@@ -57,6 +59,10 @@ public class SafariCommand extends Command {
                 .then(literal("restart").requires(source -> source.hasPermissionLevel(4)).executes(this::onRestart))
                 .then(literal("debug").requires(source -> source.hasPermissionLevel(4))
                     .then(literal("portal").executes(this::debugPortal)))
+                .then(literal("alpharate").requires(source -> source.hasPermissionLevel(4))
+                    .executes(this::getAlphaRate)
+                    .then(argument("rate", FloatArgumentType.floatArg(0.0f))
+                        .executes(this::setAlphaRate)))
                 .then(literal("add_time").requires(source -> source.hasPermissionLevel(4))
                     .then(argument("players", EntityArgumentType.players())
                         .then(argument("time", TimeArgumentType.time(Integer.MIN_VALUE))
@@ -311,6 +317,42 @@ public class SafariCommand extends Command {
         return hours > 0
                 ? String.format("%02d:%02d:%02d", hours, minutes, seconds)
                 : String.format("%02d:%02d", minutes, seconds);
+    }
+
+    private int getAlphaRate(CommandContext<ServerCommandSource> context) {
+        float currentRate = ModConfigs.SAFARI.getAlphaSpawnRateMultiplier();
+        
+        context.getSource().sendFeedback(() -> 
+            Text.empty()
+                .append(Text.literal("Current Safari Alpha Spawn Rate Multiplier: ")
+                    .formatted(Formatting.GRAY))
+                .append(Text.literal(String.format("%.2fx", currentRate))
+                    .formatted(Formatting.GOLD, Formatting.BOLD))
+        , false);
+        
+        return 1;
+    }
+
+    private int setAlphaRate(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        float newRate = FloatArgumentType.getFloat(context, "rate");
+        ModConfigs.SAFARI.setAlphaSpawnRateMultiplier(newRate);
+        
+        try {
+            ModConfigs.SAFARI.write();
+        } catch (java.io.IOException e) {
+            context.getSource().sendError(Text.literal("Failed to save config: " + e.getMessage()));
+            return 0;
+        }
+        
+        context.getSource().sendFeedback(() -> 
+            Text.empty()
+                .append(Text.literal("Safari Alpha Spawn Rate Multiplier set to: ")
+                    .formatted(Formatting.GREEN))
+                .append(Text.literal(String.format("%.2fx", newRate))
+                    .formatted(Formatting.GOLD, Formatting.BOLD))
+        , true);
+        
+        return 1;
     }
 
 }

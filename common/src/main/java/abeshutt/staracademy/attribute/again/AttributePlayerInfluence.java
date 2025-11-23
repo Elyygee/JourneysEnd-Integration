@@ -4,15 +4,13 @@ import abeshutt.staracademy.attribute.Option;
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.util.AttributeHolder;
 import com.cobblemon.mod.common.api.spawning.SpawnBucket;
-import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
-import com.cobblemon.mod.common.api.spawning.context.calculators.SpawningContextCalculator;
+import com.cobblemon.mod.common.api.spawning.position.SpawnablePosition;
+import com.cobblemon.mod.common.api.spawning.position.calculators.SpawnablePositionCalculator;
 import com.cobblemon.mod.common.api.spawning.detail.SpawnAction;
 import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail;
 import com.cobblemon.mod.common.api.spawning.influence.SpawningInfluence;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import static abeshutt.staracademy.attribute.Attributes.ofBucketWeight;
@@ -32,12 +30,12 @@ public class AttributePlayerInfluence implements SpawningInfluence {
     }
 
     @Override
-    public boolean affectSpawnable(@NotNull SpawnDetail spawnDetail, @NotNull SpawningContext spawningContext) {
+    public boolean affectSpawnable(@NotNull SpawnDetail spawnDetail, @NotNull SpawnablePosition spawnablePosition) {
         return true;
     }
 
     @Override
-    public float affectWeight(SpawnDetail detail, SpawningContext context, float weight) {
+    public float affectWeight(SpawnDetail detail, SpawnablePosition spawnablePosition, float weight) {
         for(String label : detail.getLabels()) {
             float value = weight;
 
@@ -57,20 +55,27 @@ public class AttributePlayerInfluence implements SpawningInfluence {
     }
 
     @Override
-    public void affectSpawn(Entity entity) {
+    public void affectSpawn(SpawnAction<?> action, Entity entity) {
 
     }
 
     @Override
-    public float affectBucketWeight(SpawnBucket bucket, float weight) {
-        return AttributeHolder.getRoot(this.player).path(ofBucketWeight(bucket.getName())).map(attribute -> {
-            Option<Rational> result = attribute.get(Option.present(Rational.of(weight)), AttributeContext.random());
-            return result.isPresent() ? result.get().floatValue() : weight;
-        }).orElse(weight);
+    public void affectBucketWeights(java.util.Map<SpawnBucket, Float> bucketWeights) {
+        for (SpawnBucket bucket : bucketWeights.keySet()) {
+            float weight = bucketWeights.get(bucket);
+            float newWeight = AttributeHolder.getRoot(this.player).path(ofBucketWeight(bucket.getName())).map(attribute -> {
+                Option<Rational> result = attribute.get(Option.present(Rational.of(weight)), AttributeContext.random());
+                return result.isPresent() ? result.get().floatValue() : weight;
+            }).orElse(weight);
+            bucketWeights.put(bucket, newWeight);
+        }
     }
 
-    @Override
-    public boolean isAllowedPosition(ServerWorld world, BlockPos pos, SpawningContextCalculator<?, ?> calculator) {
+    // Note: The interface signature uses net.minecraft.server.level.ServerLevel and net.minecraft.core.BlockPos
+    // but common module uses intermediary mappings (ServerWorld/BlockPos). 
+    // Since we can't access the new package structure in common module, we'll use a bridge approach.
+    // The fabric module will handle the proper remapping.
+    public boolean isAllowedPosition(net.minecraft.server.world.ServerWorld world, net.minecraft.util.math.BlockPos pos, SpawnablePositionCalculator<?, ?> calculator) {
         return true;
     }
 

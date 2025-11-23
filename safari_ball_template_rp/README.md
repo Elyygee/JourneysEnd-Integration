@@ -1,6 +1,6 @@
-# Custom Safari Ball Resource Pack Template
+# Safari Ball Resource Pack Template
 
-This resource pack provides assets for custom Great Safari Ball and Golden Safari Ball.
+This resource pack provides models for custom Great Safari Ball and Golden Safari Ball.
 
 ## Structure
 
@@ -9,60 +9,58 @@ safari_ball_template_rp/
 ├── pack.mcmeta                          # Resource pack metadata
 ├── assets/
 │   └── journeysend/
-│       ├── bedrock/
-│       │   └── poke_balls/
-│       │       └── variations/
-│       │           ├── great_safari_ball.json      # Maps to Cobblemon's model with our texture
-│       │           └── golden_safari_ball.json      # Maps to Cobblemon's model with our texture
 │       ├── models/
 │       │   └── item/
-│       │       ├── great_safari_ball.json      # Item model for Great Safari Ball
-│       │       └── golden_safari_ball.json     # Item model for Golden Safari Ball
+│       │       ├── great_safari_ball.json          ✓ 2D model (flat icon)
+│       │       ├── golden_safari_ball.json         ✓ 2D model (flat icon)
+│       │       ├── great_safari_ball_model.json   ✓ 3D model (thrown entity)
+│       │       └── golden_safari_ball_model.json   ✓ 3D model (thrown entity)
 │       └── textures/
-│           ├── gui/
-│           │   └── ball/
-│           │       ├── great_safari_ball.png   # GUI icon for Great Safari Ball
-│           │       └── golden_safari_ball.png  # GUI icon for Golden Safari Ball
 │           └── item/
+│               ├── great_safari_ball.png              ⚠ NEED PNG (64x64 flat icon)
+│               ├── golden_safari_ball.png              ⚠ NEED PNG (64x64 flat icon)
 │               └── poke_balls/
-│                   ├── great_safari_ball.png   # Inventory icon for Great Safari Ball
-│                   ├── golden_safari_ball.png  # Inventory icon for Golden Safari Ball
 │                   └── models/
-│                       ├── great_safari_ball.png   # 3D model texture for Great Safari Ball
-│                       └── golden_safari_ball.png  # 3D model texture for Golden Safari Ball
-└── README.md                                # This file
+│                       ├── great_safari_ball.png       ⚠ NEED PNG (64x32 3D model texture)
+│                       └── golden_safari_ball.png       ⚠ NEED PNG (64x32 3D model texture)
+└── README.md                              # This file
 ```
+
+## Texture Requirements
+
+You need to create 4 PNG texture files:
+
+### Flat Icons (64x64 PNG)
+These are displayed in the inventory GUI as flat sprites:
+- `assets/journeysend/textures/item/great_safari_ball.png`
+- `assets/journeysend/textures/item/golden_safari_ball.png`
+
+### 3D Model Textures (64x32 PNG)
+These are used for the 3D model when the ball is thrown/held:
+- `assets/journeysend/textures/item/poke_balls/models/great_safari_ball.png`
+- `assets/journeysend/textures/item/poke_balls/models/golden_safari_ball.png`
+
+The 3D model texture uses a UV map layout:
+- Top half (pixels 0-15): Lid/half of the ball
+- Bottom half (pixels 16-31): Other half of the ball
 
 ## How to Use
 
-**Important**: This resource pack uses Cobblemon's Poke Ball model, only with custom textures. You only need to edit the PNG files.
+1. **Add your PNG textures** to the locations listed above
+2. **Place this resource pack** in your server's `resourcepacks` folder
+3. **Enable it** in resource pack settings (should load above Cobblemon)
 
-1. **Customize Textures**
-   - Edit the PNG files in your image editor to create custom textures
-   - Great Safari Ball could have a blue/green tint
-   - Golden Safari Ball could have a gold/yellow tint
-   - Files to edit:
-     - `assets/journeysend/textures/gui/ball/` - GUI icons (party/Pokémon selection)
-     - `assets/journeysend/textures/item/poke_balls/` - Inventory icons (item in inventory)
-     - `assets/journeysend/textures/item/poke_balls/models/` - 3D model textures (for thrown entity)
+## Notes
 
-2. **Install the Resource Pack**
-   - Place this folder in your server's `resourcepacks` directory
-   - Enable it in your server config or client
+- All model files already point to the correct `journeysend` namespace
+- Model paths match the mod's expectations
+- Texture references use `journeysend:` namespace (not `cobblemon:`)
+- The 3D models use the same geometry as Cobblemon's standard Poke Ball
 
-## Current Model Configuration
+## Model Configuration in Code
 
-The resource pack uses Cobblemon's Poke Ball model with your custom textures:
-- Both balls use Cobblemon's standard Poke Ball model (`cobblemon:bedrock/poke_balls/models/poke_ball`)
-- Variations file maps the model to your custom textures
-- Simply edit the PNG texture files to customize the appearance
-- No Blockbench editing needed unless you want custom geometry
+The mod uses:
+- `journeysend:item/great_safari_ball` - 2D flat model ID
+- `journeysend:item/great_safari_ball_model` - 3D model ID
 
-## Note
-
-This resource pack works in conjunction with the main mod, which handles:
-- Catch rate mechanics
-- Usage restrictions (only in Safari dimension)
-- HP calculation logic
-- Entity rendering
-
+Both are already configured in `ModPokeBalls.java`.

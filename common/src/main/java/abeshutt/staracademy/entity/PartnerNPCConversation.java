@@ -7,7 +7,7 @@ import abeshutt.staracademy.util.TextUtils;
 import abeshutt.staracademy.world.data.PartnerData;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.random.RandomSource;
-import com.cobblemon.mod.common.api.events.pokemon.PokemonSentPostEvent;
+import com.cobblemon.mod.common.api.events.pokemon.PokemonSentEvent;
 import com.cobblemon.mod.common.pokemon.Species;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -88,7 +88,7 @@ public class PartnerNPCConversation implements INbtSerializable<NbtCompound> {
         }
     }
 
-    public void onPokemonSent(ServerPlayerEntity player, PartnerNPCEntity npc, PokemonSentPostEvent event) {
+    public void onPokemonSent(ServerPlayerEntity player, PartnerNPCEntity npc, PokemonSentEvent.Post event) {
         if(this.phase != Phase.AWAIT_PARTNER_SUMMON) {
             return;
         }

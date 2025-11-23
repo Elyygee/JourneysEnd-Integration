@@ -1,9 +1,7 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.StarAcademyMod;
-import com.cobblemon.mod.common.api.pokeball.catching.modifiers.MultiplierModifier;
 import com.cobblemon.mod.common.api.pokeball.catching.modifiers.WorldStateModifier;
-import com.cobblemon.mod.common.api.pokeball.catching.effects.CaptureEffects;
 import com.cobblemon.mod.common.pokeball.PokeBall;
 import net.minecraft.util.Identifier;
 
@@ -21,8 +19,8 @@ public class ModPokeBalls {
                 return 1.0F * 4.0F; // 4.0F total
             }), 
             List.of(), 0.8F, 
-            Identifier.of("cobblemon", "textures/gui/ball/great_safari_ball"),  // 2D icon from resource pack
-            StarAcademyMod.id("item/great_safari_ball_model"),  // 3D model - item model path
+            StarAcademyMod.id("item/great_safari_ball"),  // 2D icon - item model id (maps to journeysend:models/item/great_safari_ball.json)
+            new Identifier("cobblemon", "item/great_safari_ball_model"),  // 3D model - cobblemon namespace (maps to cobblemon:models/item/great_safari_ball_model.json)
             1.25F, false);
             
     public static final PokeBall GOLDEN_SAFARI_BALL = new PokeBall(StarAcademyMod.id("golden_safari_ball"),
@@ -36,7 +34,7 @@ public class ModPokeBalls {
             }),
             List.of((thrower, pokemon) -> pokemon.setShiny(true)),
             0.8F, 
-            Identifier.of("cobblemon", "textures/gui/ball/golden_safari_ball"),  // 2D icon from resource pack
-            StarAcademyMod.id("item/golden_safari_ball_model"),  // 3D model - item model path
+            StarAcademyMod.id("item/golden_safari_ball"),  // 2D icon - item model id (maps to journeysend:models/item/golden_safari_ball.json)
+            new Identifier("cobblemon", "item/golden_safari_ball_model"),  // 3D model - cobblemon namespace (maps to cobblemon:models/item/golden_safari_ball_model.json)
             1.25F, false);
 }

@@ -4,10 +4,9 @@ import abeshutt.staracademy.compat.enhancedcelestials.block.LunarForecastHologra
 import abeshutt.staracademy.compat.enhancedcelestials.block.entity.LunarForecastHologramBlockEntity
 import abeshutt.staracademy.init.ModBlocks
 import com.cobblemon.mod.common.api.events.CobblemonEvents
-import com.cobblemon.mod.common.api.events.pokemon.ExperienceGainedPreEvent
+import com.cobblemon.mod.common.api.events.pokemon.ExperienceGainedEvent
 import com.cobblemon.mod.common.api.events.pokemon.ShinyChanceCalculationEvent
 import com.cobblemon.mod.common.api.spawning.SpawnBucket
-import com.cobblemon.mod.common.api.spawning.context.SpawningContext
 import com.cobblemon.mod.common.api.spawning.detail.PokemonSpawnDetail
 import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail
 import com.cobblemon.mod.common.api.spawning.influence.SpawningInfluence
@@ -212,12 +211,12 @@ object EnhancedCelestialsCompat {
                     return true // Expired if EC not loaded or error
                 }
                 
-                override fun affectWeight(detail: SpawnDetail, spawningContext: SpawningContext, weight: Float): Float {
+                override fun affectWeight(detail: SpawnDetail, spawnablePosition: com.cobblemon.mod.common.api.spawning.position.SpawnablePosition, weight: Float): Float {
                     if (detail is PokemonSpawnDetail) {
                         try {
                             val enhancedCelestialsClass = Class.forName("dev.corgitaco.enhancedcelestials.EnhancedCelestials")
                             val lunarForecastWorldDataMethod = enhancedCelestialsClass.getMethod("lunarForecastWorldData", net.minecraft.world.World::class.java)
-                            val lunarDataOptional = lunarForecastWorldDataMethod.invoke(null, spawningContext.world) as java.util.Optional<*>
+                            val lunarDataOptional = lunarForecastWorldDataMethod.invoke(null, spawnablePosition.world) as java.util.Optional<*>
                             
                             if (lunarDataOptional.isPresent) {
                                 val lunarData = lunarDataOptional.get()
@@ -295,15 +294,15 @@ object EnhancedCelestialsCompat {
                     }
                 }
 
-                override fun affectBucketWeight(bucket: SpawnBucket, weight: Float): Float {
+                override fun affectBucketWeights(bucketWeights: MutableMap<SpawnBucket, Float>) {
                     try {
                         val ec = Class.forName("dev.corgitaco.enhancedcelestials.EnhancedCelestials")
                         val wf = ec.getMethod("lunarForecastWorldData", net.minecraft.world.World::class.java)
                         val dataOpt = wf.invoke(null, serverPlayer.world) as java.util.Optional<*>
-                        if (!dataOpt.isPresent) return weight
+                        if (!dataOpt.isPresent) return
 
                         val data = dataOpt.get()
-                        val holder = data.javaClass.getMethod("currentLunarEventHolder").invoke(data) ?: return weight
+                        val holder = data.javaClass.getMethod("currentLunarEventHolder").invoke(data) ?: return
 
                         val tags = Class.forName("dev.corgitaco.enhancedcelestials.api.ECLunarEventTags")
                         val AURORA_MOON = tags.getField("AURORA_MOON").get(null)
@@ -312,20 +311,20 @@ object EnhancedCelestialsCompat {
 
                         val isAurora = isIn.invoke(holder, AURORA_MOON) as Boolean
                         val isSuper = isIn.invoke(holder, SUPER_MOON) as Boolean
-                        if (!isAurora) return weight
+                        if (!isAurora) return
 
                         val cfg = LunarBoostConfig.getInstance()
                         val multiplier = if (isSuper) cfg.superAuroraMoonRarePokemonSpawnMultiplier
                                          else cfg.auroraMoonRarePokemonSpawnMultiplier
 
-                        return when (bucket.name) {
-                            "common", "uncommon" -> weight / multiplier
-                            "rare", "ultra-rare" -> weight * multiplier
-                            else -> weight
+                        for ((bucket, weight) in bucketWeights) {
+                            when (bucket.name) {
+                                "common", "uncommon" -> bucketWeights[bucket] = weight / multiplier
+                                "rare", "ultra-rare" -> bucketWeights[bucket] = weight * multiplier
+                            }
                         }
                     } catch (t: Throwable) {
-                        System.err.println("Journey's End: Aurora affectBucketWeight() failed: ${t.message}")
-                        return weight
+                        System.err.println("Journey's End: Aurora affectBucketWeights() failed: ${t.message}")
                     }
                 }
             }

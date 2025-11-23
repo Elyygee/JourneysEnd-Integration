@@ -21,7 +21,7 @@ dependencies {
     modCompileOnly("dev.architectury:architectury:$rootProject.architectury_api_version")
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
 
-    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1")
+    modCompileOnly("com.cobblemon:mod:1.7.0+1.21.1")
     modCompileOnly(files("jars/molang-1.1.18.jar"))
 
     modCompileOnly("curse.maven:cobbledollars-859232:6604561")
