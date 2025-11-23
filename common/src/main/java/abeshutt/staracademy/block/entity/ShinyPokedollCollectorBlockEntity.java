@@ -35,22 +35,46 @@ public class ShinyPokedollCollectorBlockEntity extends BaseBlockEntity {
         if (state.get(ShinyPokedollCollectorBlock.LIT) && this.world != null && !this.world.isClient()) {
             Registry<Block> blocks = world.getRegistryManager().get(RegistryKeys.BLOCK);
             if (lifeTime % ModConfigs.POKEDOLLS.getCheckInterval() == 0) {
+                // Copy the configured target dolls so we can track which unique IDs we've seen
                 Set<Identifier> targets = new HashSet<>(ModConfigs.POKEDOLLS.getBlocksToDetect());
 
-                int found = FastBlockCheck.countBlocksFast(ModConfigs.POKEDOLLS.getRadius(),
-                        ModConfigs.POKEDOLLS.getNumberOfPokedolls(), true, world, pos,
+                // Use the total number of configured dolls as the target count
+                int totalTargets = targets.size();
+
+                // If nothing is configured, just stay at 0% to avoid division by zero
+                if (totalTargets == 0) {
+                    if (this.progress != 0.0f) {
+                        this.progress = 0.0f;
+                        this.markDirty();
+                        this.sync();
+                    }
+                    return;
+                }
+
+                // Count how many UNIQUE configured dolls we can find around the collector,
+                // up to the total number of configured dolls
+                int found = FastBlockCheck.countBlocksFast(
+                        ModConfigs.POKEDOLLS.getRadius(),
+                        totalTargets,
+                        true,
+                        world,
+                        pos,
                         state1 -> {
                             Identifier id = blocks.getId(state1.getBlock());
 
-                            if(targets.contains(id)) {
+                            if (targets.contains(id)) {
                                 targets.remove(id);
                                 return true;
                             }
 
                             return false;
-                        }, FastBlockCheck.EUCLIDEAN_DISTANCE);
+                        },
+                        FastBlockCheck.EUCLIDEAN_DISTANCE
+                );
 
-                float newProgress = MathHelper.clamp((float) found / (float) ModConfigs.POKEDOLLS.getNumberOfPokedolls(), 0.0f, 1.0f);
+                // Progress is based on how many of the configured dolls were found:
+                // 0% = none found, 100% = every doll ID in the list is present somewhere in range
+                float newProgress = MathHelper.clamp((float) found / (float) totalTargets, 0.0f, 1.0f);
                 if(newProgress != this.progress) {
                     this.progress = newProgress;
                     this.markDirty();

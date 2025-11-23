@@ -8,8 +8,11 @@ import abeshutt.staracademy.init.ModRegistries;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
+import com.cobblemon.mod.common.api.events.pokemon.ShinyChanceCalculationEvent;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import dev.architectury.event.events.client.ClientLifecycleEvent;
+import abeshutt.staracademy.block.entity.ShinyPokedollCollectorBlockEntity;
+import abeshutt.staracademy.init.ModBlocks;
+import net.minecraft.util.math.BlockPos;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
@@ -67,6 +70,9 @@ public final class StarAcademyMod {
         
         // Register lunar event commands (platform-specific)
         tryRegisterLunarCommands();
+        
+        // Register shiny boost from Shiny Pokedoll Collectors
+        registerShinyPokedollCollectorBoost();
 
         CommonEvents.POKEMON_SENT_PRE.register(event -> {
             if(event.getLevel().getRegistryKey() == SAFARI) {
@@ -142,7 +148,7 @@ public final class StarAcademyMod {
         CommonEvents.POKEMON_ENTITY_SPAWN.register(event -> {
             MinecraftServer server = event.getEntity().getWorld().getServer();
             if(server == null) return;
-            Pokemon pokemon = event.getEntity().getPokemon();
+            // Pokemon pokemon = event.getEntity().getPokemon(); // Unused for now
 
             /*
             if(FORCE_SPAWNING.get()) {
@@ -231,6 +237,115 @@ public final class StarAcademyMod {
             LOGGER.warn("Journey's End: Failed to register lunar event commands: {}", e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private static void registerShinyPokedollCollectorBoost() {
+        CobblemonEvents.SHINY_CHANCE_CALCULATION.subscribe(event -> {
+            try {
+                // Access Kotlin properties using reflection
+                java.lang.reflect.Field pokemonField = ShinyChanceCalculationEvent.class.getDeclaredField("pokemon");
+                pokemonField.setAccessible(true);
+                Pokemon pokemon = (Pokemon) pokemonField.get(event);
+                
+                // Access entity property from Pokemon (Kotlin property)
+                java.lang.reflect.Field entityField = pokemon.getClass().getDeclaredField("entity");
+                entityField.setAccessible(true);
+                net.minecraft.entity.Entity entity = (net.minecraft.entity.Entity) entityField.get(pokemon);
+                
+                if (entity == null) {
+                    return; // No entity, can't check position
+                }
+                
+                net.minecraft.world.World world = entity.getEntityWorld();
+                
+                if (world.isClient()) {
+                    return; // Only process on server
+                }
+                
+                // Get config values
+                float maxMultiplier = ModConfigs.POKEDOLLS.getMaxShinyBoostMultiplier();
+                int radius = ModConfigs.POKEDOLLS.getShinyBoostRadius();
+                
+                if (maxMultiplier <= 1.0f || radius <= 0) {
+                    return; // No boost configured
+                }
+                
+                // Find nearby Shiny Pokedoll Collectors using chunk-based iteration for efficiency
+                BlockPos entityPos = entity.getBlockPos();
+                float totalProgress = 0.0f;
+                int collectorCount = 0;
+                
+                // Calculate chunk bounds
+                int minChunkX = (entityPos.getX() - radius) >> 4;
+                int maxChunkX = (entityPos.getX() + radius) >> 4;
+                int minChunkZ = (entityPos.getZ() - radius) >> 4;
+                int maxChunkZ = (entityPos.getZ() + radius) >> 4;
+                
+                // Iterate through chunks and check block entities
+                for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+                    for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                        if (!world.isChunkLoaded(chunkX, chunkZ)) {
+                            continue; // Skip unloaded chunks
+                        }
+                        
+                        net.minecraft.world.chunk.WorldChunk chunk = world.getChunk(chunkX, chunkZ);
+                        if (chunk == null) {
+                            continue;
+                        }
+                        
+                        // Iterate through block entities in this chunk
+                        for (java.util.Map.Entry<BlockPos, net.minecraft.block.entity.BlockEntity> entry : chunk.getBlockEntities().entrySet()) {
+                            BlockPos pos = entry.getKey();
+                            
+                            // Check if within radius (using squared distance for efficiency)
+                            int dx = pos.getX() - entityPos.getX();
+                            int dy = pos.getY() - entityPos.getY();
+                            int dz = pos.getZ() - entityPos.getZ();
+                            int distSq = dx * dx + dy * dy + dz * dz;
+                            
+                            if (distSq > radius * radius) {
+                                continue; // Outside radius
+                            }
+                            
+                            // Check if this is a Shiny Pokedoll Collector
+                            net.minecraft.block.entity.BlockEntity be = entry.getValue();
+                            if (be instanceof ShinyPokedollCollectorBlockEntity collector) {
+                                // Only count collectors that are lit (active)
+                                net.minecraft.block.BlockState state = world.getBlockState(pos);
+                                if (state.getBlock() == ModBlocks.SHINY_POKEDOLL_COLLECTOR.get() && 
+                                    state.get(abeshutt.staracademy.block.ShinyPokedollCollectorBlock.LIT)) {
+                                    totalProgress += collector.getProgress();
+                                    collectorCount++;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Calculate average progress and apply boost
+                if (collectorCount > 0) {
+                    float averageProgress = totalProgress / collectorCount;
+                    // Calculate multiplier: 1.0 (no boost) to maxMultiplier (full boost)
+                    // Linear interpolation: multiplier = 1.0 + (maxMultiplier - 1.0) * progress
+                    float multiplier = 1.0f + (maxMultiplier - 1.0f) * averageProgress;
+                    
+                    // In Cobblemon, chance is the denominator (lower = better odds)
+                    // So we divide by the multiplier to make it smaller (better odds)
+                    java.lang.reflect.Field chanceField = ShinyChanceCalculationEvent.class.getDeclaredField("chance");
+                    chanceField.setAccessible(true);
+                    float currentChance = chanceField.getFloat(event);
+                    
+                    float newChance = currentChance / multiplier;
+                    float modifier = currentChance - newChance;
+                    event.addModifier(-modifier); // Negative modifier reduces the chance
+                    
+                    LOGGER.debug("Journey's End: Applied shiny boost from {} collectors (avg progress: {}%, multiplier: {}x)", 
+                        collectorCount, String.format("%.2f", averageProgress * 100f), String.format("%.2f", multiplier));
+                }
+            } catch (Exception e) {
+                LOGGER.warn("Journey's End: Failed to apply shiny boost from Pokedoll Collectors: {}", e.getMessage());
+            }
+        });
     }
 
 }

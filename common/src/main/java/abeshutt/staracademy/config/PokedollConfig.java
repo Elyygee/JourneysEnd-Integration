@@ -21,6 +21,12 @@ public class PokedollConfig extends FileConfig {
     @Expose
     private int checkInterval = 20 * 3; // In ticks.
 
+    @Expose
+    private float maxShinyBoostMultiplier = 2.0f; // Maximum shiny boost multiplier at 100% progress (e.g., 2.0 = 2x shiny rate)
+
+    @Expose
+    private int shinyBoostRadius = 64; // Radius to check for collectors when calculating shiny boost
+
 
     @Override
     public String getPath() {
@@ -33,6 +39,8 @@ public class PokedollConfig extends FileConfig {
         radius = 16;
         numberOfPokedolls = 5;
         checkInterval = 20 * 3;
+        maxShinyBoostMultiplier = 2.0f;
+        shinyBoostRadius = 64;
     }
 
     public Set<Identifier> getBlocksToDetect() {
@@ -49,5 +57,13 @@ public class PokedollConfig extends FileConfig {
 
     public int getCheckInterval() {
         return checkInterval;
+    }
+
+    public float getMaxShinyBoostMultiplier() {
+        return maxShinyBoostMultiplier;
+    }
+
+    public int getShinyBoostRadius() {
+        return shinyBoostRadius;
     }
 }
