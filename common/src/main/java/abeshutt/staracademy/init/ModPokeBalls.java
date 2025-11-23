@@ -19,7 +19,7 @@ public class ModPokeBalls {
                 return 1.0F * 4.0F; // 4.0F total
             }),
             List.of(), 0.8F,
-            // 2D inventory icon - use Cobblemon namespace so it behaves like vanilla balls and matches Cobblemon expectations
+            // 2D inventory icon - use Cobblemon namespace to match cobblemon-main17 structure
             // Resolves to: assets/cobblemon/models/item/great_safari_ball.json -> cobblemon:textures/item/poke_balls/great_safari_ball.png
             new Identifier("cobblemon", "great_safari_ball"),
             new Identifier("cobblemon", "item/great_safari_ball_model"),  // 3D model - cobblemon namespace (maps to cobblemon:models/item/great_safari_ball_model.json)
@@ -36,7 +36,7 @@ public class ModPokeBalls {
             }),
             List.of((thrower, pokemon) -> pokemon.setShiny(true)),
             0.8F,
-            // 2D inventory icon - use Cobblemon namespace so it behaves like vanilla balls and matches Cobblemon expectations
+            // 2D inventory icon - use Cobblemon namespace to match cobblemon-main17 structure
             // Resolves to: assets/cobblemon/models/item/golden_safari_ball.json -> cobblemon:textures/item/poke_balls/golden_safari_ball.png
             new Identifier("cobblemon", "golden_safari_ball"),
             new Identifier("cobblemon", "item/golden_safari_ball_model"),  // 3D model - cobblemon namespace (maps to cobblemon:models/item/golden_safari_ball_model.json)

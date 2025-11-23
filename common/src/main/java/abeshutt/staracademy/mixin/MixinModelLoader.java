@@ -43,6 +43,16 @@ public abstract class MixinModelLoader {
                 loader.loadModels(filteredUnbakedModels, this::loadItemModel);
             }
         }
+
+        // Ensure Cobblemon-style 2D models for our custom Safari Balls are loaded.
+        // These models live under assets/cobblemon/models/item/* but there is no vanilla
+        // item with ID cobblemon:great_safari_ball / golden_safari_ball, so they won't
+        // be picked up automatically. We explicitly schedule them here so that
+        // ModelIdentifier("cobblemon:great_safari_ball#inventory") and
+        // ModelIdentifier("cobblemon:golden_safari_ball#inventory") resolve to
+        // non-missing models in our SafariBall 2D renderer mixin.
+        this.loadItemModel(new ModelIdentifier(new Identifier("cobblemon", "great_safari_ball"), "inventory"));
+        this.loadItemModel(new ModelIdentifier(new Identifier("cobblemon", "golden_safari_ball"), "inventory"));
     }
 
 }
