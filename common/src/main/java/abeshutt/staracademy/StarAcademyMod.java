@@ -8,7 +8,6 @@ import abeshutt.staracademy.init.ModRegistries;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
-import com.cobblemon.mod.common.api.events.pokemon.ShinyChanceCalculationEvent;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import abeshutt.staracademy.block.entity.ShinyPokedollCollectorBlockEntity;
 import abeshutt.staracademy.init.ModBlocks;
@@ -242,15 +241,9 @@ public final class StarAcademyMod {
     private static void registerShinyPokedollCollectorBoost() {
         CobblemonEvents.SHINY_CHANCE_CALCULATION.subscribe(event -> {
             try {
-                // Access Kotlin properties using reflection
-                java.lang.reflect.Field pokemonField = ShinyChanceCalculationEvent.class.getDeclaredField("pokemon");
-                pokemonField.setAccessible(true);
-                Pokemon pokemon = (Pokemon) pokemonField.get(event);
-                
-                // Access entity property from Pokemon (Kotlin property)
-                java.lang.reflect.Field entityField = pokemon.getClass().getDeclaredField("entity");
-                entityField.setAccessible(true);
-                net.minecraft.entity.Entity entity = (net.minecraft.entity.Entity) entityField.get(pokemon);
+                // Access Kotlin properties via getters
+                Pokemon pokemon = event.getPokemon();
+                net.minecraft.entity.Entity entity = pokemon.getEntity();
                 
                 if (entity == null) {
                     return; // No entity, can't check position
@@ -329,11 +322,9 @@ public final class StarAcademyMod {
                     // Linear interpolation: multiplier = 1.0 + (maxMultiplier - 1.0) * progress
                     float multiplier = 1.0f + (maxMultiplier - 1.0f) * averageProgress;
                     
-                    // In Cobblemon, chance is the denominator (lower = better odds)
-                    // So we divide by the multiplier to make it smaller (better odds)
-                    java.lang.reflect.Field chanceField = ShinyChanceCalculationEvent.class.getDeclaredField("chance");
-                    chanceField.setAccessible(true);
-                    float currentChance = chanceField.getFloat(event);
+                    // In Cobblemon, chance is the denominator (lower = better odds).
+                    // So we divide by the multiplier to make it smaller (better odds).
+                    float currentChance = event.getChance();
                     
                     float newChance = currentChance / multiplier;
                     float modifier = currentChance - newChance;
