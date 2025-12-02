@@ -64,75 +64,92 @@ public class ModItems extends ModRegistries {
             return item;
         });
 
+        // Roasted berries that are not provided natively by CobbleCuisine
         register("roasted_aguav_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_apicot_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_aspear_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_babiri_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_aspear_berry natively
+        // register("roasted_aspear_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_babiri_berry natively
+        // register("roasted_babiri_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_belue_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_bluk_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_charti_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_cheri_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_chesto_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_chilan_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_chople_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_coba_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_colbur_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides charti, cheri, chesto, chilan, chople, coba, colbur natively
+        // register("roasted_charti_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_cheri_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_chesto_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_chilan_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_chople_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_coba_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_colbur_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_cornn_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_custap_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_durin_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_enigma_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
+        // CobbleCuisine provides roasted_enigma_berry natively
+        // register("roasted_enigma_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_figy_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_ganlon_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_grepa_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_haban_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_haban_berry natively
+        // register("roasted_haban_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_hondew_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_hopo_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_iapapa_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_jaboca_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_kasib_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_kebia_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_kasib_berry and roasted_kebia_berry natively
+        // register("roasted_kasib_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_kebia_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_kee_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_kelpsy_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_lansat_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_leppa_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
+        // CobbleCuisine provides roasted_leppa_berry natively
+        // register("roasted_leppa_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_liechi_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_lum_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
+        // CobbleCuisine provides roasted_lum_berry natively
+        // register("roasted_lum_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_mago_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_magost_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_maranga_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_micle_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_nanab_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_nomel_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_occa_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_oran_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_occa_berry and roasted_oran_berry natively
+        // register("roasted_occa_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_oran_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_pamtre_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_passho_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_payapa_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_pecha_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_persim_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_passho_berry, roasted_payapa_berry, roasted_pecha_berry, roasted_persim_berry natively
+        // register("roasted_passho_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_payapa_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_pecha_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_persim_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_petaya_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_pinap_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_pomeg_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_qualot_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_rabuta_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_rawst_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_rawst_berry natively
+        // register("roasted_rawst_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_razz_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_rindo_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_roseli_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
+        // CobbleCuisine provides roasted_rindo_berry and roasted_roseli_berry natively
+        // register("roasted_rindo_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_roseli_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_rowap_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_salac_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_shuca_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
-        register("roasted_sitrus_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
+        // CobbleCuisine provides roasted_shuca_berry and roasted_sitrus_berry natively
+        // register("roasted_shuca_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // register("roasted_sitrus_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_spelon_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_starf_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_tamato_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_tanga_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_tanga_berry natively
+        // register("roasted_tanga_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_touga_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_wacan_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_wacan_berry natively
+        // register("roasted_wacan_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_watmel_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_wepear_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("roasted_wiki_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
-        register("roasted_yache_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
+        // CobbleCuisine provides roasted_yache_berry natively
+        // register("roasted_yache_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
         register("smoked_black_apricorn", () -> new FoodItem(Rarity.COMMON, 4, 0.4f, true, false));
         register("smoked_blue_apricorn", () -> new FoodItem(Rarity.COMMON, 4, 0.4f, true, false));
         register("smoked_green_apricorn", () -> new FoodItem(Rarity.COMMON, 4, 0.4f, true, false));
